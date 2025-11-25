@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
-import astonPrinter from '../assets/astonprinter_figma.png';
-import amazink from '../assets/amazink_figma.png';
-import ssi from '../assets/ssi_figma.png';
-import printex from '../assets/printex_figma.png';
-import printfactory from '../assets/printfactory_figma.png';
-import seblakjawara from '../assets/seblak_figma.png';
+import astonPrinter from '../../../../assets/astonprinter_figma.png';
+import amazink from '../../../../assets/amazink_figma.png';
+import ssi from '../../../../assets/ssi_figma.png';
+import printex from '../../../../assets/printex_figma.png';
+import printfactory from '../../../../assets/printfactory_figma.png';
+import seblakjawara from '../../../../assets/seblak_figma.png';
 
 function ContentSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);

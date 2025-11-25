@@ -1,25 +1,13 @@
 import React from 'react'
-import Header from './components/Header'
-import Navbar from './components/Navbar'
-import About from './components/About'
-import Visimisi from './components/Visimisi'
-import CompanyStructure from './components/Company_structure'
-import Company from './components/Company'
-import Footer from './components/Footer'
+import PublicLayout from './layouts/public_layout.jsx'
+import Dashboard from './features/admin/pages/dashboard.jsx'
+import HeaderLandingPage from './features/admin/admin-layouts/cms/header_landing_page.jsx'
 
 function App() {
   return (
-    <div className='w-full overflow-hidden'>
-      <Navbar/>
-      <Header/>
-      <About/>
-      <Visimisi/>
-      <CompanyStructure/>
-      <Company/>
-      <Footer/>
-
-    </div>
+       // <PublicLayout />
+       //<Dashboard />
+        <HeaderLandingPage />
   )
 }
-
 export default App
