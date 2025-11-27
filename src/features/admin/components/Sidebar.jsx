@@ -14,7 +14,7 @@ export default function Sidebar() {
       submenu: [
         { label: "Header landing page", path: "/admin/cms/header" },
         { label: "Visi Misi", path: "/admin/cms/visi-misi" },
-        { label: "Gallery", path: "/admin/cms/gallery" },
+        { label: "News", path: "/admin/cms/news" },
       ]
     },
     { label: "Users management", icon: <Users size={20} />, path: "/admin/users" },
