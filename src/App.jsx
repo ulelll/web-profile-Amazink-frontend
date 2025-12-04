@@ -1,13 +1,18 @@
 import React from 'react'
-import PublicLayout from './layouts/public_layout.jsx'
-import Dashboard from './features/admin/pages/dashboard.jsx'
-import HeaderLandingPage from './features/admin/admin-layouts/cms/header_landing_page.jsx'
+import { BrowserRouter, Routes } from 'react-router-dom'
+import PublicRoutes from './app/routes/PublicRouters.jsx'
+import AdminRoutes from './app/routes/AdminRouters.jsx'
+import HrRoutes from './app/routes/HrRoutes.jsx'
 
 function App() {
   return (
-       // <PublicLayout />
-       //<Dashboard />
-        <HeaderLandingPage />
-  )
-}
-export default App
+    <BrowserRouter>
+        <Routes>
+          {PublicRoutes()}
+          {AdminRoutes()}
+          {HrRoutes()}
+        </Routes>
+    </BrowserRouter>
+    )
+  }
+  export default App

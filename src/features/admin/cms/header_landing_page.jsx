@@ -12,7 +12,10 @@ export default function HeaderLandingPage() {
     const [entries, setEntries] = useState([
         { id: 1, image: '/api/placeholder/400/300', text: 'Welcome to our amazing platform', visible: true },
         { id: 2, image: '/api/placeholder/400/300', text: 'Discover new features every day', visible: true },
-        { id: 3, image: '/api/placeholder/400/300', text: 'Join our community today', visible: false }
+        { id: 4, image: '/api/placeholder/400/300', text: 'Join our community today', visible: false },
+        { id: 5, image: '/api/placeholder/400/300', text: 'Join our community today', visible: true },
+        { id: 6, image: '/api/placeholder/400/300', text: 'Join our community today', visible: false },
+        { id: 7, image: '/api/placeholder/400/300', text: 'Join our community today', visible: true },
     ]);
 
     const handleImageUpload = (e) => {
