@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // --- Assets ---
 import logoAmazinkBlue from "../../../assets/amazink_logo_blue.svg";
@@ -23,40 +24,48 @@ const Button = ({ variant = 'default', size = 'default', className = '', childre
 
     return (
         <button
-        className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
-        {...props}
+            className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
+            {...props}
         >
-        {children}
+            {children}
         </button>
     );
-    };
+};
 
-    const RecruitmentNavbar = () => {
+const RecruitmentNavbar = () => {
+    const navigate = useNavigate();
     const companyName = "Amazink People Group";
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-            <a href="#" className="flex items-center space-x-2" aria-label={companyName}>
-            <img
-                src={logoAmazinkBlue}
-                alt="Amazink People Group Logo"
-                className="h-14 w-auto"
-            />
-            </a>
+            <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+                
+                <a href="#" className="flex items-center space-x-2" aria-label={companyName}>
+                    <img
+                        src={logoAmazinkBlue}
+                        alt="Amazink People Group Logo"
+                        className="h-14 w-auto"
+                    />
+                </a>
 
-            <div className="flex items-center space-x-3">
-            <Button variant="outline" onClick={() => console.log('Login clicked')}>
-                Login
-            </Button>
+                <div className="flex items-center space-x-3">
+                    <Button
+                        variant="outline"
+                        onClick={() => navigate("/recruitment/login")}
+                    >
+                        Login
+                    </Button>
 
-            <Button variant="default" onClick={() => console.log('Register clicked')}>
-                Register
-            </Button>
+                    <Button
+                        variant="default"
+                        onClick={() => navigate("/recruitment/register")}
+                    >
+                        Register
+                    </Button>
+                </div>
             </div>
-        </div>
         </header>
     );
-    };
+};
 
 export default RecruitmentNavbar;

@@ -5,7 +5,6 @@ export default function PublicRoutes() {
     return (
         <>
         <Route path="/" element={<PublicLayout />} />
-        {/* Tambahin route publik lain di sini */}
         </>
     );
 }

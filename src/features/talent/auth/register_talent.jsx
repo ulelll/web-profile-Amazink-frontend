@@ -17,7 +17,7 @@ export default function TalentRegisterPage() {
     const handleRegister = (e) => {
         e.preventDefault();
         console.log({ username, password, nik });
-        alert("Login submitted!");
+        alert("register submitted!");
     };
 
     return (
@@ -162,7 +162,7 @@ export default function TalentRegisterPage() {
                         <p className="text-sm text-gray-600">
                             Sudah punya akun?{" "}
                             <button
-                                onClick={() => navigate("/talent")}
+                                onClick={() => navigate("/recruitment/login")}
                                 className="text-yellow-500 font-semibold hover:text-yellow-600 transition"
                             >
                                 Klik disini

@@ -147,7 +147,7 @@ export default function TalentLoginPage() {
                         <p className="text-sm text-gray-600">
                             Belum punya akun?{" "}
                             <button
-                                onClick={() => navigate("/talent/register")}
+                                onClick={() => navigate("/recruitment/register")}
                                 className="text-yellow-500 font-semibold hover:text-yellow-600 transition"
                             >
                                 Klik disini
