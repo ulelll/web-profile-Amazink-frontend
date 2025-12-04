@@ -1,9 +1,11 @@
-import React from "react"
-import { Bell, Search } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Bell, Search } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 const TopbarHR = () => {
+    const navigate = useNavigate()
+
     return (
         <div className="w-full h-20 border-b bg-white flex items-center justify-between px-6">
 
@@ -39,7 +41,7 @@ const TopbarHR = () => {
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/hr/profile")}>Profile</DropdownMenuItem>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuItem className="text-red-500">Logout</DropdownMenuItem>
             </DropdownMenuContent>
