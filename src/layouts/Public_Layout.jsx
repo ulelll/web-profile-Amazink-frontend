@@ -1,10 +1,11 @@
-import Navbar from '@/features/public/home/pages/Navbar'
-import Header from '@/features/public/home/pages/Header'
-import About from '@/features/public/home/pages/About'
-import Visimisi from '@/features/public/home/pages/Visimisi'
-import CompanyStructure from '@/features/public/home/pages/Company_structure'
-import Company from '@/features/public/home/pages/Company'
-import Footer from '@/features/public/home/pages/Footer'
+import About from '@/features/public/section/About'
+import Company from '@/features/public/section/Company'
+import CompanyStructure from '@/features/public/section/Company_structure'
+import Footer from '@/features/public/section/Footer'
+import Header from '@/features/public/section/Header'
+import Navbar from '@/features/public/section/Navbar'
+import News from '@/features/public/section/News'
+import Visimisi from '@/features/public/section/Visimisi'
 
 export default function PublicLayout() {
     return (
@@ -15,6 +16,7 @@ export default function PublicLayout() {
             <Visimisi />
             <CompanyStructure />
             <Company />
+            <News/>
             <Footer />
         </div>
     )

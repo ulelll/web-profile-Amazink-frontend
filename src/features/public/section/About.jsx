@@ -1,5 +1,5 @@
 import React from 'react'
-import amazink_logo_blue from '../../../../assets/amazink_logo_blue.svg'
+import amazink_logo_blue from '@/assets/amazink_logo_blue.svg'
 
 function About() {
   return (

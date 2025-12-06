@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react"; 
-import logoAmazinkWhite from "../../../../assets/amazink_logo_white.svg";
-import logoAmazinkBlue from "../../../../assets/amazink_logo_blue.svg";
+import logoAmazinkWhite from "@/assets/amazink_logo_white.svg";
+import logoAmazinkBlue from "@/assets/amazink_logo_blue.svg";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
