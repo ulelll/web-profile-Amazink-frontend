@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const Header = () => {
   // Untuk sementara hardcode dulu, nanti bisa diganti dari backend
@@ -24,7 +24,7 @@ const Header = () => {
       title: 'Sed Do Eiusmod Tempor'
     },
     {
-      id: 4,
+      id: 5,
       image: '/bgheader5.jpg', 
       title: 'Sed Do Eiusmod Tempor'
     }

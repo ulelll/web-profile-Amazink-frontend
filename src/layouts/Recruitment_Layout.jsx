@@ -1,12 +1,6 @@
-import Navbar from '@/features/public/home/pages/Navbar'
-import Header from '@/features/public/home/pages/Header'
-import About from '@/features/public/home/pages/About'
-import Visimisi from '@/features/public/home/pages/Visimisi'
-import CompanyStructure from '@/features/public/home/pages/Company_structure'
-import Company from '@/features/public/home/pages/Company'
-import Footer from '@/features/public/home/pages/Footer'
-import RecruitmentNavbar from '@/features/talent/landingpage/recruitment_navbar'
+import Footer from '@/features/public/section/Footer'
 import HeroSection from '@/features/talent/landingpage/hero_section'
+import RecruitmentNavbar from '@/features/talent/landingpage/recruitment_navbar'
 
 export default function RecruitmentLayout() {
     return (
