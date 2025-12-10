@@ -13,7 +13,7 @@ export default function SidebarHR() {
         path: "/admin/vacancies",
         submenu: [
             { label: "Buat Lowongan", path: "/hr/vacancies/create-vacancy" },
-            { label: "Atur Lowongan", path: "/hr/vacancies/manage-vacancies" },
+            { label: "setting Lowongan", path: "/hr/vacancies/manage-vacancies" },
             { label: "Pelamar", path: "/hr/vacancies/applicants" },
         ]
         },

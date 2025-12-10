@@ -1,9 +1,9 @@
 import VacancyCard from '@/components/vacancy-card';
+import HrLayout from '@/layouts/hr_layout';
 import { Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import RecruitmentNavbar from '../landingpage/recruitment_navbar';
 
-export default function VacancyList() {
+export default function VacancysSetting() {
     const [vacancies, setVacancies] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -61,7 +61,7 @@ export default function VacancyList() {
                 start_periode: "2025-01-25",
                 end_periode: "2025-03-25",
                 deskripsi: "Pengembangan aplikasi iOS dan Android",
-                active: 1
+                active: 0
             }
         ];
 
@@ -73,19 +73,15 @@ export default function VacancyList() {
     );
 
     return (
-        <>
-            <RecruitmentNavbar />
+        <HrLayout>
 
             <div className="min-h-screen bg-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
                     <div className="mb-8">
                         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                            Lowongan Kerja Tersedia
+                           Atur Lowongan Kerja yang tersedia
                         </h1>
-                        <p className="text-gray-600 mb-6">
-                            Temukan peluang karir terbaik untuk Anda
-                        </p>
 
                         <div className="relative max-w-xl">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -112,7 +108,7 @@ export default function VacancyList() {
                     )}
                 </div>
             </div>
-        </>
+        </HrLayout>
     );
 }
 
