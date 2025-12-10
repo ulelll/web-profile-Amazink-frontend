@@ -22,9 +22,37 @@ export default function VacancysSetting() {
                 start_periode: "2025-01-01",
                 end_periode: "2025-02-28",
                 divisions: "IT",
-                deskripsi: "Mencari frontend developer berpengalaman",
+                lokasi: "Jakarta Selatan",
+                tipe_kerja: "Full-time",
+                gaji: "15.000.000 - 25.000.000",
+                deskripsi: "Mencari frontend developer berpengalaman untuk membangun UI modern dan scalable.",
+                kualifikasi: [
+                    "Minimal 3 tahun pengalaman sebagai Frontend Developer",
+                    "Menguasai React.js dan Tailwind",
+                    "Terbiasa dengan Git dan CI/CD",
+                    "Memahami REST API"
+                ],
+                tanggung_jawab: [
+                    "Membangun tampilan web yang responsif",
+                    "Bekerja sama dengan tim backend",
+                    "Melakukan code review",
+                    "Mengoptimalkan performa aplikasi"
+                ],
+                benefit: [
+                    "BPJS Kesehatan & Ketenagakerjaan",
+                    "Kerja hybrid",
+                    "Tunjangan makan & transport",
+                    "Budget Learning"
+                ],
+                golongan_peserta: [
+                    "Sarjana Informatika / Sistem Informasi",
+                    "Pengalaman minimal 3 tahun"
+                ],
+                kontak_hrd: "hrd@company.com",
+                posted_at: "2024-12-01",
                 active: 1
             },
+
             {
                 id: 2,
                 judul_lowongan: "Backend Engineer - Node.js",
@@ -32,9 +60,37 @@ export default function VacancysSetting() {
                 start_periode: "2025-01-15",
                 end_periode: "2025-03-15",
                 divisions: "IT",
-                deskripsi: "Membangun API dan microservices",
+                lokasi: "Bandung",
+                tipe_kerja: "Full-time",
+                gaji: "13.000.000 - 22.000.000",
+                deskripsi: "Membangun API yang kuat, aman, dan scalable.",
+                kualifikasi: [
+                    "Menguasai Node.js & Express",
+                    "Memahami database SQL dan NoSQL",
+                    "Mengerti prinsip clean architecture",
+                    "Terbiasa menggunakan Docker"
+                ],
+                tanggung_jawab: [
+                    "Membangun dan memelihara API",
+                    "Integrasi layanan internal",
+                    "Optimasi performa backend",
+                    "Setup pipeline CI/CD"
+                ],
+                benefit: [
+                    "Asuransi kesehatan swasta",
+                    "Work From Home 2x per minggu",
+                    "Tunjangan internet",
+                    "Training dan sertifikasi"
+                ],
+                golongan_peserta: [
+                    "Fresh Graduate dipersilakan melamar",
+                    "Sarjana Informatika / Teknik Komputer"
+                ],
+                kontak_hrd: "backend.hiring@company.com",
+                posted_at: "2024-12-05",
                 active: 1
             },
+
             {
                 id: 3,
                 judul_lowongan: "UI/UX Designer",
@@ -42,9 +98,35 @@ export default function VacancysSetting() {
                 start_periode: "2025-02-01",
                 end_periode: "2025-03-30",
                 divisions: "Desain grafis",
-                deskripsi: "Merancang pengalaman pengguna yang menarik",
+                lokasi: "Yogyakarta",
+                tipe_kerja: "Internship",
+                gaji: "3.000.000 - 5.000.000",
+                deskripsi: "Merancang pengalaman pengguna yang modern dan mudah digunakan.",
+                kualifikasi: [
+                    "Menguasai Figma",
+                    "Paham design system",
+                    "Memiliki portofolio yang relevan",
+                    "Komunikatif dan detail-oriented"
+                ],
+                tanggung_jawab: [
+                    "Membuat wireframe, user flow, dan mockup",
+                    "Berkoordinasi dengan Frontend Developer",
+                    "Mengujicoba desain pada pengguna"
+                ],
+                benefit: [
+                    "Mentoring dengan senior designer",
+                    "Ruang kerja nyaman",
+                    "Snack dan kopi gratis"
+                ],
+                golongan_peserta: [
+                    "Mahasiswa aktif atau Fresh Graduate",
+                    "Bidang Desain/Multimedia"
+                ],
+                kontak_hrd: "uiux@company.com",
+                posted_at: "2024-12-10",
                 active: 1
             },
+
             {
                 id: 4,
                 judul_lowongan: "Data Scientist",
@@ -52,9 +134,34 @@ export default function VacancysSetting() {
                 start_periode: "2025-01-20",
                 end_periode: "2025-03-20",
                 divisions: "IT",
-                deskripsi: "Analisis data dan machine learning",
+                lokasi: "Jakarta Pusat",
+                tipe_kerja: "Full-time",
+                gaji: "18.000.000 - 30.000.000",
+                deskripsi: "Analisis data untuk pengambilan keputusan berbasis machine learning.",
+                kualifikasi: [
+                    "Menguasai Python (Pandas, NumPy, Scikit-Learn)",
+                    "Paham SQL",
+                    "Punya pengalaman membangun model ML"
+                ],
+                tanggung_jawab: [
+                    "Membangun model prediksi",
+                    "Membersihkan dan mengolah data",
+                    "Membuat visualisasi data"
+                ],
+                benefit: [
+                    "Asuransi lengkap",
+                    "Laptop Macbook",
+                    "Bonus tahunan"
+                ],
+                golongan_peserta: [
+                    "Sarjana Statistik/Matematika/TI",
+                    "Pengalaman minimal 1 tahun"
+                ],
+                kontak_hrd: "datascience@company.com",
+                posted_at: "2024-12-12",
                 active: 1
             },
+
             {
                 id: 5,
                 judul_lowongan: "DevOps Engineer",
@@ -62,9 +169,34 @@ export default function VacancysSetting() {
                 divisions: "IT",
                 start_periode: "2025-02-10",
                 end_periode: "2025-04-10",
-                deskripsi: "Mengelola infrastructure dan CI/CD",
+                lokasi: "Surabaya",
+                tipe_kerja: "Full-time",
+                gaji: "16.000.000 - 28.000.000",
+                deskripsi: "Mengelola infrastruktur dan pipeline CI/CD.",
+                kualifikasi: [
+                    "Pengalaman CI/CD tools",
+                    "Menguasai Docker & Kubernetes",
+                    "Paham cloud (AWS/GC)"
+                ],
+                tanggung_jawab: [
+                    "Monitoring sistem",
+                    "Meningkatkan reliability",
+                    "Automasi proses deployment"
+                ],
+                benefit: [
+                    "Asuransi kesehatan",
+                    "WFH fleksibel",
+                    "Bonus kinerja"
+                ],
+                golongan_peserta: [
+                    "Sarjana Informatika",
+                    "Pengalaman minimal 2 tahun"
+                ],
+                kontak_hrd: "devops@company.com",
+                posted_at: "2024-12-15",
                 active: 1
             },
+
             {
                 id: 6,
                 judul_lowongan: "Mobile App Developer",
@@ -72,10 +204,34 @@ export default function VacancysSetting() {
                 divisions: "IT",
                 start_periode: "2025-01-25",
                 end_periode: "2025-03-25",
-                deskripsi: "Pengembangan aplikasi iOS dan Android",
+                lokasi: "Remote",
+                tipe_kerja: "Contract",
+                gaji: "10.000.000 - 18.000.000",
+                deskripsi: "Pengembangan aplikasi Android & iOS.",
+                kualifikasi: [
+                    "Menguasai Flutter atau React Native",
+                    "Paham integrasi API",
+                    "Punya pengalaman publikasi app"
+                ],
+                tanggung_jawab: [
+                    "Mengembangkan fitur baru",
+                    "Fix bugs",
+                    "Optimasi performa"
+                ],
+                benefit: [
+                    "Remote full",
+                    "Jam kerja fleksibel"
+                ],
+                golongan_peserta: [
+                    "Fresh Graduate welcome",
+                    "Pengalaman lebih disukai"
+                ],
+                kontak_hrd: "mobile@company.com",
+                posted_at: "2024-12-18",
                 active: 0
             }
         ];
+
 
         setVacancies(dummyVacancies);
         const divisions = Array.from(new Set(dummyVacancies.map(v => v.divisions.split(" ")[0])));

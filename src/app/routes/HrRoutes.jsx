@@ -4,7 +4,8 @@ import DashboardHr from "@/features/hr/pages/dashboard-hr.jsx";
 import ApplicantPage from "@/features/hr/pages/pelamar/applicant";
 import ApplicantDetailPage from "@/features/hr/pages/pelamar/detail";
 import Profile from "@/features/hr/pages/profile";
-import VacancysSetting from "@/features/hr/pages/vacancys";
+import VacancyDetailPage from "@/features/hr/pages/settings/detail-vacancy";
+import VacancysSetting from "@/features/hr/pages/settings/vacancys";
 import { Route } from "react-router-dom";
 
 
@@ -17,7 +18,7 @@ export default function HrRoutes() {
             <Route path="/hr/vacancies/applicants" name="applicants" element={<ApplicantPage />}></Route>
             <Route path="/hr/vacancies/applicants/:id" name="applicants" element={<ApplicantDetailPage />}></Route>
             <Route path="/hr/vacancies/manage-vacancies" name="setting" element={<VacancysSetting />}> </Route>
-            <Route path="/hr/vacancies/manage-vacancies/:id" name="setting" element></Route>
+            <Route path="/hr/vacancies/manage-vacancies/:id" name="setting" element={<VacancyDetailPage />}></Route>
             <Route path="/hr/profile" name="hrProfile" element={<Profile />} />
 
         </>
