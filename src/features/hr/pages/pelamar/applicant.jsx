@@ -1,7 +1,7 @@
-import DateRangeDropdown from "@/components/date-range";
-import { Button, Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/index";
+import { Button, Calendar, Input, Popover, PopoverContent, PopoverTrigger, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/index";
 import HrLayout from "@/layouts/hr_layout";
-import { Filter, Search } from "lucide-react";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon, Filter, Search } from "lucide-react";
 import { useState } from "react";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
@@ -13,11 +13,9 @@ export default function ApplicantPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDivision, setSelectedDivision] = useState("all");
   const [selectedVacancy, setSelectedVacancy] = useState("all");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
   const [dateRange, setDateRange] = useState({
-    startDate: null,
-    endDate: null
+    from: null,
+    to: null,
   });
 
   const [applicants, setApplicants] = useState([
@@ -59,9 +57,10 @@ export default function ApplicantPage() {
     },
   ]);
 
+
   const divisions = ["all", ...new Set(applicants.map(item => item.division))];
   const vacancys = ["all", ...new Set(applicants.map(item => item.vacancy))];
-  const isDateEmpty = !dateRange.startDate || !dateRange.endDate;
+  const isDateEmpty = !dateRange.from || !dateRange.to;
 
   const filteredData = applicants.filter(item => {
 
@@ -80,10 +79,10 @@ export default function ApplicantPage() {
     let matchesDate = true;
 
     if (!isDateEmpty) {
-      if (dateRange.startDate && dateRange.endDate) {
+      if (dateRange.from && dateRange.to) {
         const applied = new Date(item.dateApplied);
-        const start = new Date(dateRange.startDate);
-        const end = new Date(dateRange.endDate);
+        const start = new Date(dateRange.from);
+        const end = new Date(dateRange.to);
 
         matchesDate = applied >= start && applied <= end;
       }
@@ -139,12 +138,37 @@ export default function ApplicantPage() {
               </select>
             </div>
 
-            <DateRangeDropdown
-              value={dateRange}
-              onChange={setDateRange}
-            />
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start h-12 border-2 border-gray-200 hover:border-orange-500 hover:bg-orange-50 rounded-xl text-base font-normal transition-all"
+                >
+                  <CalendarIcon className="h-5 w-5 mr-3 text-orange-500" />
 
-            {(searchQuery || selectedDivision !== "all" || dateRange) && (
+                  {dateRange.from && dateRange.to ? (
+                    <span className="text-gray-700">
+                      {format(dateRange.from, "LLL dd, y")} → {format(dateRange.to, "LLL dd, y")}
+                    </span>
+                  ) : (
+                    <span className="text-gray-400">Pilih rentang tanggal</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+
+              <PopoverContent className="p-0 w-auto">
+                <Calendar
+                  mode="range"
+                  numberOfMonths={2}
+                  selected={dateRange}
+                  onSelect={(v) => v && setDateRange(v)}
+                  initialFocus
+                  className="rounded-xl border-2 border-orange-100"
+                />
+              </PopoverContent>
+            </Popover>
+
+            {(searchQuery || selectedDivision !== "all" || dateRange.from !== null || dateRange.to !== null) && (
               <Button
                 variant="outline"
                 size="sm"
