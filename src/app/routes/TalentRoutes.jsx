@@ -14,6 +14,7 @@ export default function TalentRoutes() {
         <Route path= "/recruitment/register" element={<TalentRegisterPage />} />
         <Route path= "/recruitment/login" element={<TalentLoginPage />} />
         <Route path= "/recruitment/all-vacancies" element={<AllVacancies />} />
+        <Route path= "/recruitment/vacancies/:id" element={<AllVacancies />} />
         <Route path= "/recruitment/profile" element={<Profile />} />
         
         <Route path= "/recruitment/profile/Add" element={<Add />} />

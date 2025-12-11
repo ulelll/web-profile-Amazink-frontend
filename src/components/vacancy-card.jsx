@@ -2,10 +2,10 @@ import { Card, CardContent } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 
-export default function VacancyCard({ vacancy }) {
+export default function VacancyCard({ vacancy, link }) {
     return (
         <Link
-            to={`/hr/vacancies/manage-vacancies/${vacancy.id}`}
+            to={link}
             className="mt-3 inline-block text-green-600 font-semibold"
         >
             <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group">
