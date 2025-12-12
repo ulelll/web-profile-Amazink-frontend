@@ -2,8 +2,8 @@ import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from '@
 import { Camera, Upload, X } from 'lucide-react';
 import { useState } from 'react';
 
-export default function ProfileImageUpload({ disabled }) {
-    const [imagePreview, setImagePreview] = useState(null);
+export default function ProfileImageUpload({ disabled, imgUrl }) {
+    const [imagePreview, setImagePreview] = useState(imgUrl);
     const [showDialog, setShowDialog] = useState(false);
 
     const handleImageChange = (e) => {

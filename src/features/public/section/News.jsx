@@ -1,43 +1,45 @@
 import img from '@/assets/poce.jpg';
 import NewsCard from '@/features/public/component/News-Card';
-import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
-    const newsContent = [
-        {
-            id: 1,
-            image: img,
-            title: 'Berita Panas Hari Ini',
-            description: 'Politik • 20 menit lalu',
-            synopsis: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-        },
-        {
-            id: 2,
-            image: '/news/foto1.jpg',
-            title: 'Berita Panas Hari Ini',
-            description: 'Politik • 20 menit lalu',
-            synopsis: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-        },{
-            id: 3,
-            image: '/news/foto1.jpg',
-            title: 'Berita Panas Hari Ini',
-            description: 'Politik • 20 menit lalu',
-            synopsis: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-        },{
-            id: 4,
-            image: '/news/foto1.jpg',
-            title: 'Berita Panas Hari Ini',
-            description: 'Politik • 20 menit lalu',
-            synopsis: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-        },
-        // Add more news items as needed
-    ];
+const newsContent = [
+  {
+    id: 1,
+    image: img,
+    title: 'Berita Panas Hari Ini',
+    description: 'Politik • 20 menit lalu',
+    synopsis: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+  },
+  {
+    id: 2,
+    image: '/news/foto1.jpg',
+    title: 'Berita Panas Hari Ini',
+    description: 'Politik • 20 menit lalu',
+    synopsis: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+  }, {
+    id: 3,
+    image: '/news/foto1.jpg',
+    title: 'Berita Panas Hari Ini',
+    description: 'Politik • 20 menit lalu',
+    synopsis: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+  }, {
+    id: 4,
+    image: '/news/foto1.jpg',
+    title: 'Berita Panas Hari Ini',
+    description: 'Politik • 20 menit lalu',
+    synopsis: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+  },
+  // Add more news items as needed
+];
 
-  export default function News() {
+export default function News() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  
+  const navigate = useNavigate();
+
   // Calculate how many cards can fit on screen (responsive)
   const getCardsPerView = () => {
     if (typeof window === 'undefined') return 3;
@@ -45,35 +47,35 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
     if (window.innerWidth < 1024) return 2;
     return 3;
   };
-  
+
   const [cardsPerView, setCardsPerView] = useState(getCardsPerView());
-  
+
   // Update cards per view on window resize
   useState(() => {
     const handleResize = () => setCardsPerView(getCardsPerView());
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
+
   // Create infinite loop by duplicating items
   const extendedContent = [...newsContent, ...newsContent, ...newsContent];
   const startIndex = newsContent.length;
-  
+
   const handlePrev = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => prev - 1);
   };
-  
+
   const handleNext = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => prev + 1);
   };
-  
+
   const handleTransitionEnd = () => {
     setIsTransitioning(false);
-    
+
     // Reset to middle section for infinite loop
     if (currentIndex >= startIndex + newsContent.length) {
       setCurrentIndex(startIndex);
@@ -97,7 +99,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
             </h2>
             <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-blue-400 mx-auto mt-4 rounded-full"></div>
           </div>
-          
+
           <div className="relative">
             {/* Previous Button */}
             <button
@@ -107,7 +109,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
             >
               <ChevronLeft className="w-6 h-6 text-gray-800" />
             </button>
-            
+
             {/* Carousel Container */}
             <div className="overflow-hidden">
               <div
@@ -128,13 +130,13 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
                       title={item.title}
                       description={item.description}
                       synopsis={item.synopsis}
-                      onRead={() => console.log("dibaca", item.title)}
+                      onRead={() => navigate('/news/'+item.id)}
                     />
                   </div>
                 ))}
               </div>
             </div>
-            
+
             {/* Next Button */}
             <button
               onClick={handleNext}
