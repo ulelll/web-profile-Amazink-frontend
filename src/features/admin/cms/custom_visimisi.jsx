@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import AdminLayout from '@/layouts/Admin_Layout';
+import AdminLayout from '@/layouts/Admin_Layout'
 
 export default function CustomVisiMisiPage() {
     const [visiText, setVisiText] = useState('');
