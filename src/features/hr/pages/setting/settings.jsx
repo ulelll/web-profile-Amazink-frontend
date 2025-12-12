@@ -3,7 +3,7 @@ import HrLayout from '@/layouts/hr_layout';
 import { format } from "date-fns";
 import { Calendar as CalendarIcon, Filter } from "lucide-react";
 import { useState } from "react";
-import AddCompanyDialog from "./add-company";
+import CompanyDialog from "./add-company";
 const companies = [
     {
         id: 1,
@@ -68,7 +68,7 @@ export default function SettingsPage() {
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold text-gray-800">Company Management</h1>
 
-                    <AddCompanyDialog trigger={
+                    <CompanyDialog trigger={
                         <Button
                             size="lg"
                             className="bg-orange-600 hover:bg-orange-700 text-white"
@@ -186,9 +186,14 @@ export default function SettingsPage() {
                                             </TableCell>
                                             <TableCell>
                                                 <div className="flex gap-2">
-                                                    <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
-                                                        Edit
-                                                    </Button>
+                                                    <CompanyDialog
+                                                        mode="edit"
+                                                        defaultData={item}
+                                                        trigger={
+
+                                                            <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
+                                                                Edit
+                                                            </Button>} />
                                                 </div>
                                             </TableCell>
                                         </TableRow>

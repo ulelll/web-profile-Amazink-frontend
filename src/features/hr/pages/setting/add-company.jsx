@@ -1,8 +1,7 @@
 import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, Input } from "@/components/ui"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-
-export default function AddCompanyDialog({ trigger }) {
+export default function CompanyDialog({ trigger, mode = "add", defaultData = null }) {
     const [formData, setFormData] = useState({
         name: "",
         contact: "",
@@ -10,6 +9,29 @@ export default function AddCompanyDialog({ trigger }) {
         email: "",
         established: "",
     })
+
+    // Preload data if edit mode
+    useEffect(() => {
+        if (mode === "edit" && defaultData) {
+            setFormData({
+                name: defaultData.name || "",
+                contact: defaultData.contact || "",
+                location: defaultData.location || "",
+                email: defaultData.email || "",
+                established: defaultData.established || "",
+            })
+        }
+
+        if (mode === "add") {
+            setFormData({
+                name: "",
+                contact: "",
+                location: "",
+                email: "",
+                established: "",
+            })
+        }
+    }, [mode, defaultData])
 
     const handleChange = e => {
         setFormData({
@@ -19,8 +41,12 @@ export default function AddCompanyDialog({ trigger }) {
     }
 
     const handleSave = () => {
-        console.log("Saved:", formData)
-        // do your Firestore/API save here
+        if (mode === "add") {
+            console.log("Adding company:", formData)
+        } else {
+            console.log("Editing company:", formData)
+        }
+        // API or Firestore logic goes here
     }
 
     return (
@@ -31,7 +57,7 @@ export default function AddCompanyDialog({ trigger }) {
 
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Tambah Company</DialogTitle>
+                    <DialogTitle>{mode === "edit" ? "Edit Company" : "Tambah Company"}</DialogTitle>
                 </DialogHeader>
 
                 <div className="grid gap-4">
@@ -62,7 +88,12 @@ export default function AddCompanyDialog({ trigger }) {
                 </div>
 
                 <DialogFooter>
-                    <Button className="bg-orange-600 hover:bg-orange-700 text-white" onClick={handleSave}>Simpan</Button>
+                    <Button 
+                        className="bg-orange-600 hover:bg-orange-700 text-white" 
+                        onClick={handleSave}
+                    >
+                        Simpan
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
