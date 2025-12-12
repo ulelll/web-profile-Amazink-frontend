@@ -19,6 +19,8 @@ export default function TalentLoginPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [messageType, setMessageType] = useState(""); 
+    const params = new URLSearchParams(window.location.search);
+    const next = params.get("next");
 
 const handleLogin = async (e) => {
     e.preventDefault();
@@ -30,41 +32,66 @@ const handleLogin = async (e) => {
         body.append("password", password);
 
         const res = await axios.post(
-        `${API_BASE_URL}/api/v1/auth/login/talent`,
-        body,
-        {
-            headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            },
-        }
+            `${API_BASE_URL}/api/v1/auth/login`,
+            body,
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            }
         );
 
-        console.log("Login Success:", res.data);
+        const token = res.data?.access_token;
+        if (!token) throw new Error("Token tidak ditemukan");
+
+        localStorage.setItem("access_token", token);
+
+        // decode JWT
+        const payloadBase64 = token.split(".")[1];
+        const decodedPayload = JSON.parse(atob(payloadBase64));
+        const userRole = decodedPayload?.role;
+        if (!userRole) throw new Error("Role tidak ditemukan");
+
         setMessage("Login berhasil");
         setMessageType("success");
-        setIsLoading(false);
-        // show success briefly then navigate
-        setTimeout(() => navigate("/recruitment/all-vacancies"), 700);
+
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const next = urlParams.get("next");
+
+        setTimeout(() => {
+            if (next) {
+                navigate(next); 
+            } else {
+                // role-based fallback
+                if (userRole === "talent") navigate("/recruitment/vacancies");
+                if (userRole === "admin") navigate("/admin");
+                if (userRole === "hr") navigate("/hr");
+            }
+        }, 700);
+
     } catch (err) {
-        console.error("Login Error:", err.response?.data);
-        const status = err.response?.status;
-        let errMsg = "Terjadi kesalahan. Coba lagi.";
-        if (status === 401 || status === 400) {
-            errMsg = "Username atau password salah";
-        } else if (err.response?.data?.message) {
-            errMsg = err.response.data.message;
+        console.error("LOGIN ERROR:", err);
+        let msg = "Terjadi kesalahan. Coba lagi.";
+
+        if (err.response?.status === 400 || err.response?.status === 401) {
+            msg = "Username atau password salah";
         }
-        setMessage(errMsg);
+
+        setMessage(msg);
         setMessageType("error");
+
     } finally {
-        if (messageType !== "success") setIsLoading(false);
+        setIsLoading(false);
     }
 };
+
+
 
     return (
         <div className="min-h-screen flex relative overflow-hidden">
             {/* Left Side */}
-            <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-500 items-center justify-center p-12">
+            <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-blue-300 via-blue-400 to-blue-500 items-center justify-center p-12">
                 <div
                     className="absolute inset-0 bg-cover bg-center opacity-40"
                     style={{
@@ -97,7 +124,7 @@ const handleLogin = async (e) => {
                 <div className="hidden lg:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
                     <Card className="w-96 shadow-2xl border-0">
                         <CardContent className="p-8">
-                            <h1 className="text-3xl font-bold text-yellow-500 text-center mb-8">
+                            <h1 className="text-3xl font-bold text-blue-600 text-center mb-8">
                                 Login
                             </h1>
 
@@ -142,7 +169,7 @@ const handleLogin = async (e) => {
                                 <Button
                                     type="submit"
                                     disabled={isLoading}
-                                    className="w-full h-12 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold text-base rounded-md shadow-md transition-all duration-300"
+                                    className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base rounded-md shadow-md transition-all duration-300"
                                 >
                                     {isLoading ? "Logging in..." : "Log in!"}
                                 </Button>
@@ -152,7 +179,7 @@ const handleLogin = async (e) => {
                                     <button
                                         type="button"
                                         onClick={() => navigate("/recruitment/register")}
-                                        className="text-yellow-500 font-semibold hover:text-yellow-600"
+                                        className="text-blue-600 font-semibold hover:text-blue-700"
                                     >
                                         Klik disini
                                     </button>
@@ -166,7 +193,7 @@ const handleLogin = async (e) => {
                 <div className="lg:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-6">
                     <Card className="w-full max-w-md mx-auto shadow-2xl border-0">
                         <CardContent className="p-8">
-                            <h1 className="text-3xl font-bold text-yellow-500 text-center mb-8">
+                            <h1 className="text-3xl font-bold text-blue-600 text-center mb-8">
                                 Login
                             </h1>
 
@@ -208,7 +235,7 @@ const handleLogin = async (e) => {
                                 <Button
                                     type="submit"
                                     disabled={isLoading}
-                                    className="w-full h-12 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold text-base rounded-md shadow-md transition-all duration-300"
+                                    className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base rounded-md shadow-md transition-all duration-300"
                                 >
                                     {isLoading ? "Logging in..." : "Log in!"}
                                 </Button>
