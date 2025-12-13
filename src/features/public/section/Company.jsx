@@ -68,7 +68,7 @@ function ContentSlider() {
     };
 
     return (
-        <div className="w-full bg-gray-50 py-16 px-4 md:px-8 lg:px-16">
+        <div className="w-full bg-gray-50 py-16 px-4 md:px-8 lg:px-16" id='subCompany'>
         <div className="max-w-7xl mx-auto">
             {/* Section Title */}
             <div className="text-center mb-12">

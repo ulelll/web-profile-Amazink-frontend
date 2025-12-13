@@ -90,7 +90,7 @@ export default function News() {
   }, []);
 
   return (
-    <div className="w-full bg-gray-50 py-16 px-4 md:px-8 lg:px-16">
+    <div className="w-full bg-gray-50 py-16 px-4 md:px-8 lg:px-16" id='news'>
       <div className="max-w-7xl mx-auto">
         <div className="news-container">
           <div className="text-center mb-12">

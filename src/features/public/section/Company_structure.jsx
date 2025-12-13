@@ -53,7 +53,7 @@ const StrukturPerusahaan = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-white py-8 px-4 md:py-16 md:px-8 overflow-hidden relative">
+        <div className="min-h-screen bg-white py-8 px-4 md:py-16 md:px-8 overflow-hidden relative" id='structure'>
         {/* Background Pattern - Circular Waves */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
             {/* Wave patterns from bottom left */}
