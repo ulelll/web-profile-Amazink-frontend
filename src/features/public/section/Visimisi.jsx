@@ -22,7 +22,7 @@ const Visimisi = () => {
   ]
 
 return (
-    <div className='flex flex-col items-center justify-center mx-auto p-14 md:px-20 lg:px-32 w-full overflow-hidden'>
+    <div className='flex flex-col items-center justify-center mx-auto p-14 md:px-20 lg:px-32 w-full overflow-hidden' id='Visi'>
         {/* Header */}
         <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-bold mb-4">

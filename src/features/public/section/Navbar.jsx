@@ -61,9 +61,9 @@ const Navbar = () => {
             <a href="#Header" className={`transition ${scrolled ? "hover:text-blue-600" : "hover:text-gray-400"}`}>Home</a>
             <a href="#About" className={`transition ${scrolled ? "hover:text-blue-600" : "hover:text-gray-400"}`}>Tentang Kami</a>
             <a href="#Visi" className={`transition ${scrolled ? "hover:text-blue-600" : "hover:text-gray-400"}`}>Visi-Misi</a>
-            <a href="#Anakperusahaan" className={`transition ${scrolled ? "hover:text-blue-600" : "hover:text-gray-400"}`}>Struktur perusahaan</a>
-            <a href="#gallery" className={`transition ${scrolled ? "hover:text-blue-600" : "hover:text-gray-400"}`}>Gallery</a>
-            <a href="#karir" className={`transition ${scrolled ? "hover:text-blue-600" : "hover:text-gray-400"}`}>Karir</a>
+            <a href="#structure" className={`transition ${scrolled ? "hover:text-blue-600" : "hover:text-gray-400"}`}>Struktur perusahaan</a>
+            <a href="#subCompany" className={`transition ${scrolled ? "hover:text-blue-600" : "hover:text-gray-400"}`}>Gallery</a>
+            <a href="#news" className={`transition ${scrolled ? "hover:text-blue-600" : "hover:text-gray-400"}`}>Berita</a>
           </ul>
 
           {/* desktop button */}
