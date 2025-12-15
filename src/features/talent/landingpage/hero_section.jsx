@@ -43,30 +43,30 @@ const Button = ({
         <div className="bg-white min-h-[calc(100vh-64px)] flex items-center pt-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             
-            {/* Left Section */}
-            <div className="py-12 lg:py-24 max-w-lg lg:max-w-none">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900">
-                Bergabung dengan{" "}
-                <span className="text-blue-600">Amazink People Group</span>
-            </h1>
+          {/* left section */}
+                        <div className="py-12 lg:py-24 max-w-lg lg:max-w-none">
+                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900">
+                            Bergabung dengan{" "}
+                            <span className="text-blue-600">Amazink People Group</span>
+                        </h1>
 
-            <p className="mt-4 text-xl text-gray-600">
-                Langkah besar kamu selanjutnya dimulai di sini.
-            </p>
+                        <p className="mt-4 text-xl text-gray-600">
+                            Langkah besar kamu selanjutnya dimulai di sini.
+                        </p>
 
-            <div className="mt-8">
-                <Button
-                variant="default"
-                size="lg"
-                className="shadow-lg hover:shadow-xl transition-shadow"
-                onClick={() => navigate("/recruitment/vacancies")}
-                >
-                Cari Lowongan
-                </Button>
-            </div>
-            </div>
+                        <div className="mt-8">
+                            <Button
+                            variant="default"
+                            size="lg"
+                            className="shadow-lg hover:shadow-xl transition-shadow"
+                            onClick={() => navigate("/recruitment/vacancies")}
+                            >
+                            Cari Lowongan
+                            </Button>
+                        </div>
+                        </div>
 
-            {/* Right Image */}
+                        {/* Right Image */}
             <div className="hidden lg:flex justify-end items-end relative min-h-[500px]">
             <img
                 src={Levi}

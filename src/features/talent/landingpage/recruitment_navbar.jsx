@@ -51,7 +51,7 @@ const RecruitmentNavbar = () => {
                 <div className="flex items-center space-x-3">
                     <Button
                         variant="outline"
-                        onClick={() => navigate("/recruitment/login")}
+                        onClick={() => navigate("/login")}
                     >
                         Login
                     </Button>

@@ -12,6 +12,17 @@ import LogoBiru from "@/assets/amazink_logo_blue.svg";
 
 const API_BASE_URL = "http://localhost:8000";
 
+const decodeJWT = (token) => {
+    try {
+        const base64Url = token.split(".")[1];
+        const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+        return JSON.parse(atob(base64));
+    } catch {
+        return null;
+    }
+};
+
+
 export default function TalentLoginPage() {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
@@ -25,6 +36,8 @@ export default function TalentLoginPage() {
 const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setMessage("");
+    setMessageType("");
 
     try {
         const body = new URLSearchParams();
@@ -32,59 +45,53 @@ const handleLogin = async (e) => {
         body.append("password", password);
 
         const res = await axios.post(
-            `${API_BASE_URL}/api/v1/auth/login`,
-            body,
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            }
+        `${API_BASE_URL}/api/v1/auth/login`,
+        body,
+        { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
         );
 
         const token = res.data?.access_token;
-        if (!token) throw new Error("Token tidak ditemukan");
+        if (!token) throw new Error("NO_TOKEN");
+
+        const payload = decodeJWT(token);
+        if (!payload?.role) throw new Error("NO_ROLE");
 
         localStorage.setItem("access_token", token);
-
-        // decode JWT
-        const payloadBase64 = token.split(".")[1];
-        const decodedPayload = JSON.parse(atob(payloadBase64));
-        const userRole = decodedPayload?.role;
-        if (!userRole) throw new Error("Role tidak ditemukan");
+        localStorage.setItem("role", payload.role);
 
         setMessage("Login berhasil");
         setMessageType("success");
 
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const next = urlParams.get("next");
+        const next = new URLSearchParams(window.location.search).get("next");
 
         setTimeout(() => {
-            if (next) {
-                navigate(next); 
-            } else {
-                // role-based fallback
-                if (userRole === "talent") navigate("/recruitment/vacancies");
-                if (userRole === "admin") navigate("/admin");
-                if (userRole === "hr") navigate("/hr");
-            }
-        }, 700);
+        if (next) return navigate(next);
+
+        if (payload.role === "talent") navigate("/recruitment/vacancies");
+        else if (payload.role === "admin") navigate("/admin");
+        else if (payload.role === "hr") navigate("/hr");
+        else navigate("/login");
+        }, 600);
 
     } catch (err) {
         console.error("LOGIN ERROR:", err);
-        let msg = "Terjadi kesalahan. Coba lagi.";
 
+        let msg = "Terjadi kesalahan. Coba lagi.";
         if (err.response?.status === 400 || err.response?.status === 401) {
-            msg = "Username atau password salah";
+        msg = "Username atau password salah";
         }
 
         setMessage(msg);
         setMessageType("error");
 
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("role");
+
     } finally {
         setIsLoading(false);
     }
 };
+
 
 
 
