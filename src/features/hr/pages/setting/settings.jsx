@@ -1,199 +1,211 @@
-import { Button, Calendar, Input, Popover, PopoverContent, PopoverTrigger, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/index";
-import HrLayout from '@/layouts/hr_layout';
-import { format } from "date-fns";
-import { Calendar as CalendarIcon, Filter } from "lucide-react";
-import { useState } from "react";
-import CompanyDialog from "./add-company";
-const companies = [
-    {
-        id: 1,
-        name: "AMAZINK",
-        contact: "021-555333",
-        location: "Salatiga",
-        email: "info@sukamaju.com",
-        established: "2020-05-12",
-    },
-    {
-        id: 2,
-        name: "Printex",
-        location: "Kendal",
-        contact: "021-888777",
-        email: "office@jayaabadi.com",
-        established: "2018-02-01",
-    },
-    {
-        id: 3,
-        name: "Aston",
-        contact: "021-333222",
-        location: "Semarang",
-        email: "cs@sentosamandiri.com",
-        established: "2019-12-20",
-    },
-];
+import {
+    Button,
+    Input,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui"
+import HrLayout from "@/layouts/hr_layout"
+import { Trash2, Building2, Plus, Search, Edit2} from "lucide-react"
+import { useEffect, useState } from "react"
+import CompanyDialog from "./add-company"
 
 export default function SettingsPage() {
-    const [searchQuery, setSearchQuery] = useState("");
-    const [selectedLocation, setSelectedLocation] = useState("all");
-    const [dateRange, setDateRange] = useState({
-        from: null,
-        to: null,
-    });
+    const [companies, setCompanies] = useState([])
+    const [searchQuery, setSearchQuery] = useState("")
+    const [loading, setLoading] = useState(false)
 
-    const locations = ["all", ...new Set(companies.map(item => item.location))];
-    const isDateEmpty = !dateRange.from || !dateRange.to;
 
-    const filteredData = companies.filter(item => {
-        const matchesSearch =
-            item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.email.toLowerCase().includes(searchQuery.toLowerCase());
+    const fetchCompanies = async () => {
+        try {
+            setLoading(true)
+            const token = localStorage.getItem("access_token")
 
-        const matchesLocation =
-            selectedLocation === "all" || item.location === selectedLocation;
-        let matchesDate = true;
-        if (!isDateEmpty) {
-            if (dateRange.from && dateRange.to) {
-                const est = new Date(item.established);
-                const start = new Date(dateRange.from);
-                const end = new Date(dateRange.to);
-                matchesDate = est >= start && est <= end;
-            }
+            const res = await fetch(
+                "http://localhost:8000/api/v1/company/",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            )
+
+            if (!res.ok) throw new Error("Failed to fetch companies")
+
+            setCompanies(await res.json())
+        } catch (err) {
+            console.error(err.message)
+        } finally {
+            setLoading(false)
         }
+    }
 
-        return matchesSearch && matchesDate && matchesLocation;
-    });
+    useEffect(() => {
+        fetchCompanies()
+    }, [])
+
+
+    const handleDelete = async (id) => {
+        if (!confirm("Hapus company ini?")) return
+
+        try {
+            const token = localStorage.getItem("access_token")
+
+            const res = await fetch(
+                `http://localhost:8000/api/v1/company/${id}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            )
+
+            if (!res.ok) throw new Error("Delete failed")
+
+            fetchCompanies()
+        } catch (err) {
+            console.error(err.message)
+        }
+    }
+
+    const filteredData = companies.filter((item) =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
 
     return (
         <HrLayout>
             <div className="min-h-screen bg-gray-50 p-8">
-                <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-3xl font-bold text-gray-800">Company Management</h1>
 
-                    <CompanyDialog trigger={
-                        <Button
-                            size="lg"
-                            className="bg-orange-600 hover:bg-orange-700 text-white"
-                            onClick={() => console.log("Add Company")}
-                        >
-                            Add Company
-                        </Button>}
-                    />
-                </div>
-
-                <div className="mb-6 flex flex-wrap gap-4 items-center">
-                    <Input
-                        type="text"
-                        placeholder="Search by name or email..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="max-w-md"
-                    />
-
-                    <div className="flex gap-4 items-center">
-                        <div className="flex items-center gap-2">
-                            <Filter className="w-4 h-4 text-gray-600" />
-                            <select
-                                value={selectedLocation}
-                                onChange={(e) => setSelectedLocation(e.target.value)}
-                                className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
-                            >
-                                {locations.map(loc => (
-                                    <option key={loc} value={loc}>
-                                        {loc === "all" ? "All Locations" : loc}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <Popover>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    className="w-full justify-start h-12 border-2 border-gray-200 hover:border-orange-500 hover:bg-orange-50 rounded-xl text-base font-normal"
-                                >
-                                    <CalendarIcon className="h-5 w-5 mr-3 text-orange-500" />
-
-                                    {dateRange.from && dateRange.to ? (
-                                        <span className="text-gray-700">
-                                            {format(dateRange.from, "LLL dd, y")} → {format(dateRange.to, "LLL dd, y")}
-                                        </span>
-                                    ) : (
-                                        <span className="text-gray-400">Select date range</span>
-                                    )}
-                                </Button>
-                            </PopoverTrigger>
-
-                            <PopoverContent className="p-0 w-auto">
-                                <Calendar
-                                    mode="range"
-                                    numberOfMonths={2}
-                                    selected={dateRange}
-                                    onSelect={(v) => v && setDateRange(v)}
-                                    initialFocus
-                                />
-                            </PopoverContent>
-                        </Popover>
-
-                        {(searchQuery || selectedLocation !== 'all' || dateRange.from || dateRange.to) && (
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => {
-                                    setSearchQuery("");
-                                    setSelectedLocation("all");
-                                    setDateRange({ from: null, to: null });
-                                }}
-                            >
-                                Clear Filters
-                            </Button>
-                        )}
+                {/* HEADER */}
+                <div className="flex justify-between items-start mb-6">
+                    <div>
+                        <h1 className="text-2xl font-bold text-gray-800 mb-1">
+                            Company Management
+                        </h1>
+                        <p className="text-sm text-gray-500">
+                            Manage registered companies
+                        </p>
                     </div>
+
                 </div>
 
-                <div className="bg-white rounded-lg shadow overflow-hidden">
+                {/* CONTENT CARD */}
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                    {/* Card Header */}
+                    <div className="bg-gradient-to-r from-blue-500 to-purple-700 px-6 py-4">
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <h2 className="text-lg font-semibold text-white">Daftar Company</h2>
+                                <p className="text-sm text-blue-100">Kelola data company Anda</p>
+                            </div>
+                            <CompanyDialog
+                                onSuccess={fetchCompanies}
+                                trigger={
+                                    <Button className="bg-white text-blue-600 hover:bg-blue-50 gap-2 shadow-md">
+                                        <Plus className="w-4 h-4" />
+                                        Tambah Company
+                                    </Button>
+                                }
+                            />
+                        </div>
+                    </div>
+
+                    {/* Search Bar */}
+                    <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
+                        <div className="relative max-w-md">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                            <Input
+                                placeholder="Cari company..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="pl-10 bg-white border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            />
+                        </div>
+                    </div>
+
+                    {/* TABLE */}
                     <div className="overflow-x-auto">
                         <Table>
                             <TableHeader>
-                                <TableRow className="bg-gray-50">
-                                    <TableHead>No</TableHead>
-                                    <TableHead>Name</TableHead>
-                                    <TableHead>Contact</TableHead>
-                                    <TableHead>Email</TableHead>
-                                    <TableHead>Established</TableHead>
-                                    <TableHead>Action</TableHead>
+                                <TableRow className="bg-gray-50 hover:bg-gray-50">
+                                    <TableHead className="font-semibold text-gray-700 w-20">No</TableHead>
+                                    <TableHead className="font-semibold text-gray-700">Nama Company</TableHead>
+                                    <TableHead className="font-semibold text-gray-700">Lokasi</TableHead>
+                                    <TableHead className="font-semibold text-gray-700 text-center">Aksi</TableHead>
                                 </TableRow>
                             </TableHeader>
 
                             <TableBody>
-                                {filteredData.length === 0 ? (
+                                {loading ? (
                                     <TableRow>
-                                        <TableCell colSpan={7} className="text-center py-12">
-                                            <p className="text-gray-500">No companies found</p>
+                                        <TableCell colSpan={4} className="text-center py-12 text-gray-500">
+                                            Memuat data...
+                                        </TableCell>
+                                    </TableRow>
+                                ) : filteredData.length === 0 ? (
+                                    <TableRow>
+                                        <TableCell colSpan={4} className="text-center py-12">
+                                            <div className="flex flex-col items-center gap-2">
+                                                <Building2 className="w-12 h-12 text-gray-300" />
+                                                <p className="text-gray-500 font-medium">
+                                                    Tidak ada company ditemukan
+                                                </p>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ) : (
                                     filteredData.map((item, index) => (
-                                        <TableRow key={item.id} className="hover:bg-gray-50">
-                                            <TableCell>{index + 1}</TableCell>
-                                            <TableCell>{item.name}</TableCell>
-                                            <TableCell>{item.contact}</TableCell>
-                                            <TableCell>{item.email}</TableCell>
-                                            <TableCell>
-                                                {new Date(item.established).toLocaleDateString('en-US', {
-                                                    year: 'numeric',
-                                                    month: 'short',
-                                                    day: 'numeric'
-                                                })}
+                                        <TableRow
+                                            key={item.id}
+                                            className="hover:bg-blue-50/50 transition-colors border-b border-gray-100"
+                                        >
+                                            <TableCell className="text-gray-600 font-medium">
+                                                {index + 1}
                                             </TableCell>
                                             <TableCell>
-                                                <div className="flex gap-2">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                                                        <Building2 className="w-4 h-4 text-blue-600" />
+                                                    </div>
+                                                    <span className="font-medium text-gray-800">
+                                                        {item.name}
+                                                    </span>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="text-gray-600">
+                                                {item.location}
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="flex justify-center gap-2">
                                                     <CompanyDialog
                                                         mode="edit"
                                                         defaultData={item}
+                                                        onSuccess={fetchCompanies}
                                                         trigger={
+                                                            <Button
+                                                                size="sm"
+                                                                variant="ghost"
+                                                                className="text-blue-600 hover:bg-blue-100 hover:text-blue-700 h-8 w-8 p-0"
+                                                            >
+                                                                <Edit2 className="w-4 h-4" />
+                                                            </Button>
+                                                        }
+                                                    />
 
-                                                            <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
-                                                                Edit
-                                                            </Button>} />
+                                                    <Button
+                                                        size="sm"
+                                                        variant="ghost"
+                                                        className="text-red-600 hover:bg-red-100 hover:text-red-700 h-8 w-8 p-0"
+                                                        onClick={() =>
+                                                            handleDelete(item.id)
+                                                        }
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </Button>
                                                 </div>
                                             </TableCell>
                                         </TableRow>
@@ -205,5 +217,5 @@ export default function SettingsPage() {
                 </div>
             </div>
         </HrLayout>
-    );
+    )
 }

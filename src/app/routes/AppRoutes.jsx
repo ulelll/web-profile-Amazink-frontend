@@ -21,7 +21,7 @@ import ApplicantPage from "@/features/hr/pages/vacancys/pelamar/applicant";
 import ApplicantDetailPage from "@/features/hr/pages/vacancys/pelamar/detail";
 import VacancyDetailPage from "@/features/hr/pages/vacancys/settings/detail-vacancy";
 import VacancysSetting from "@/features/hr/pages/vacancys/settings/vacancys";
-import SettingsPage from "@/features/hr/pages/setting/settings";
+import CompanyManagement from "@/features/hr/pages/setting/settings";
 
 /* ===== ADMIN ===== */
 import Dashboard from "@/features/admin/pages/dashboard.jsx";
@@ -67,7 +67,7 @@ export default function AppRoutes() {
             <Route path="/hr/vacancies/applicants/:id" element={<ApplicantDetailPage />} />
             <Route path="/hr/vacancies/manage-vacancies" element={<VacancysSetting />} />
             <Route path="/hr/vacancies/manage-vacancies/:id" element={<VacancyDetailPage />} />
-            <Route path="/hr/settings" element={<SettingsPage />} />
+            <Route path="/hr/company-management" element={<CompanyManagement />} />
             <Route path="/hr/profile" element={<Profile />} />
         </Route>
 
