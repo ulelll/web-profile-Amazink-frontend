@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
-export default function NewsCard({ image, title, description, onRead , synopsis}) {
+export default function NewsCard({ image, title, description, onRead, synopsis }) {
   return (
     <Card className="w-full max-w-sm">
-      <img 
-        src={image} 
-        alt={title} 
+      <img
+        src={image}
+        alt={title}
         className="w-full h-48 object-cover rounded-t-xl"
       />
 
@@ -16,7 +16,7 @@ export default function NewsCard({ image, title, description, onRead , synopsis}
       </CardHeader>
 
       <CardContent>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground line-clamp-3">
           {synopsis}
         </p>
       </CardContent>
