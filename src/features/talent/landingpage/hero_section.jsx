@@ -59,7 +59,7 @@ const Button = ({
                 variant="default"
                 size="lg"
                 className="shadow-lg hover:shadow-xl transition-shadow"
-                onClick={() => navigate("/recruitment/all-vacancies")}
+                onClick={() => navigate("/recruitment/vacancies")}
                 >
                 Cari Lowongan
                 </Button>
