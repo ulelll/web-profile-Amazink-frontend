@@ -18,7 +18,7 @@ export default function TalentRegisterPage() {
     const [full_name, setFullname] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState("");
-    const [messageType, setMessageType] = useState(""); // 'success' | 'error'
+    const [messageType, setMessageType] = useState("");
 
     const handleRegister = async (e) => {
         e.preventDefault();

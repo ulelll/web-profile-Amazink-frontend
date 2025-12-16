@@ -98,7 +98,7 @@ const handleLogin = async (e) => {
     return (
         <div className="min-h-screen flex relative overflow-hidden">
             {/* Left Side */}
-            <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-blue-300 via-blue-400 to-blue-500 items-center justify-center p-12">
+            <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-blue-300 via-blue-500 to-blue-700 items-center justify-center p-12">
                 <div
                     className="absolute inset-0 bg-cover bg-center opacity-40"
                     style={{

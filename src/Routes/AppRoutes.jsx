@@ -3,16 +3,16 @@ import ProtectedRoute from "./ProtectedRoutes";
 
 /* ===== PUBLIC ===== */
 import PublicLayout from "@/layouts/public_layout.jsx";
-import LoginPage from "../../features/public/auth/login.jsx";
-import TalentRegisterPage from "../../features/talent/auth/register_talent";
+import LoginPage from "../features/public/auth/login.jsx";
+import TalentRegisterPage from "../features/talent/auth/register_talent";
 import RecruitmentLayout from "@/layouts/recruitment_layout.jsx";
-import AllVacancies from "../../features/talent/recruitment/all_vacancies.jsx";
-import VacancyDetail from "../../features/talent/recruitment/detail_vacancy.jsx";
+import AllVacancies from "../features/talent/recruitment/all_vacancies.jsx";
+import VacancyDetail from "../features/talent/recruitment/detail_vacancy.jsx";
 import RecruitmentLanding from "@/layouts/RecruitmentLanding.jsx";
 
 /* ===== TALENT ===== */
-import Profile from "../../features/talent/profile/profile.jsx";
-import Add from "../../features/talent/profile/add.jsx";
+import Profile from "../features/talent/profile/profile.jsx";
+import Add from "../features/talent/profile/add.jsx";
 
 /* ===== HR ===== */
 import DashboardHr from "@/features/hr/pages/dashboard-hr.jsx"; 
@@ -21,7 +21,8 @@ import ApplicantPage from "@/features/hr/pages/vacancys/pelamar/applicant";
 import ApplicantDetailPage from "@/features/hr/pages/vacancys/pelamar/detail";
 import VacancyDetailPage from "@/features/hr/pages/vacancys/settings/detail-vacancy";
 import VacancysSetting from "@/features/hr/pages/vacancys/settings/vacancys";
-import CompanyManagement from "@/features/hr/pages/setting/settings";
+import CompanyManagement from "@/features/hr/pages/setting/company-management.jsx";
+import DivisionManagement from "@/features/hr/pages/setting/division-management.jsx";
 
 /* ===== ADMIN ===== */
 import Dashboard from "@/features/admin/pages/dashboard.jsx";
@@ -68,6 +69,7 @@ export default function AppRoutes() {
             <Route path="/hr/vacancies/manage-vacancies" element={<VacancysSetting />} />
             <Route path="/hr/vacancies/manage-vacancies/:id" element={<VacancyDetailPage />} />
             <Route path="/hr/company-management" element={<CompanyManagement />} />
+            <Route path="/hr/division-management" element={<DivisionManagement />} />
             <Route path="/hr/profile" element={<Profile />} />
         </Route>
 

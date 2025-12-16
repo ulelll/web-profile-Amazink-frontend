@@ -31,6 +31,7 @@ export default function SidebarHR() {
             path: "/admin/settings",
             submenu: [
                 { label: "Company Management", path: "/hr/company-management" },
+                { label: "Division Management", path: "/hr/division-management" },
             ]
         },
     ];
