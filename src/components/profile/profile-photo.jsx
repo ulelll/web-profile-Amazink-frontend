@@ -1,140 +1,109 @@
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from '@/components/ui';
-import { Camera, Upload, X } from 'lucide-react';
-import { useState } from 'react';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    } from "@/components/ui/dialog";
+    import { Camera, Upload, X } from "lucide-react";
+    import { useState } from "react";
 
-export default function ProfileImageUpload({ disabled, imgUrl }) {
-    const [imagePreview, setImagePreview] = useState(imgUrl);
+    export default function ProfileImageUpload({
+    disabled,
+    imgUrl,
+    onChange, // ⬅️ TAMBAH INI
+    }) {
+    const [imagePreview, setImagePreview] = useState(imgUrl || null);
     const [showDialog, setShowDialog] = useState(false);
 
     const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+        const file = e.target.files?.[0];
 
-    const handleProfileClick = () => {
-        setShowDialog(true);
+        if (!file || !file.type.startsWith("image/")) return;
+
+        // ⬅️ KIRIM FILE KE PARENT (INI KUNCI NYAWA)
+        onChange(file);
+
+        // Preview
+        const reader = new FileReader();
+        reader.onloadend = () => {
+        setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
     };
 
     const handleRemoveImage = () => {
         setImagePreview(null);
-        setShowDialog(false);
-    };
-
-    const handleCloseDialog = () => {
+        onChange(null); // reset parent juga
         setShowDialog(false);
     };
 
     return (
         <div>
-            {/* Profile Image Preview */}
-            <div className="inline-flex items-center ">
-                <div className="relative group">
-                    {/* Image Container - Clickable */}
-                    <button
-                        disabled={disabled}
-                        onClick={handleProfileClick}
-                        className="w-40 h-40 rounded-full overflow-hidden bg-gray-200 border-4 border-white shadow-lg relative focus:outline-none focus:ring-4 focus:ring-blue-400 transition-all"
-                    >
-                        {imagePreview ? (
-                            <img
-                                src={imagePreview}
-                                alt="Profile preview"
-                                className="w-full h-full object-cover"
-                            />
-                        ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-300 to-gray-400">
-                                <Camera className="w-16 h-16 text-gray-500" />
-                            </div>
-                        )}
+        {/* Avatar */}
+        <button
+            type="button"
+            disabled={disabled}
+            onClick={() => setShowDialog(true)}
+            className="w-40 h-40 rounded-full overflow-hidden bg-gray-200 border-4 border-white shadow-lg relative"
+        >
+            {imagePreview ? (
+            <img
+                src={imagePreview}
+                alt="Profile preview"
+                className="w-full h-full object-cover"
+            />
+            ) : (
+            <div className="w-full h-full flex items-center justify-center">
+                <Camera className="w-16 h-16 text-gray-500" />
+            </div>
+            )}
+        </button>
 
-                        {/* Overlay on hover */}
-                        <div className={
-                            "absolute inset-0 bg-black bg-opacity-40 transition-opacity flex items-center justify-center " +
-                            (disabled
-                                ? "opacity-0"
-                                : "opacity-0 group-hover:opacity-100"
-                            )
-                        }>
-                            <div className="text-white text-center">
-                                <Camera className="w-8 h-8 mx-auto mb-1" />
-                                <span className="text-xs font-medium">Click to edit</span>
-                            </div>
-                        </div>
-                    </button>
-                </div>
-            </div >
+        {/* Dialog */}
+        <Dialog open={showDialog} onOpenChange={setShowDialog}>
+            <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Upload Foto Profile</DialogTitle>
+                <DialogDescription>
+                Pilih foto untuk digunakan sebagai foto profile.
+                </DialogDescription>
+            </DialogHeader>
 
-            {/* Dialog Modal */}
-            <Dialog open={showDialog} onOpenChange={setShowDialog}>
-                <DialogContent className="max-w-lg">
-                    <DialogHeader>
-                        <DialogTitle>Profile Picture</DialogTitle>
-                    </DialogHeader>
+            {imagePreview && (
+                <img
+                src={imagePreview}
+                className="w-full h-64 object-cover rounded-lg mb-4"
+                />
+            )}
 
-                    {/* Large Image Preview */}
-                    {imagePreview ? (
-                        <div className="mb-6">
-                            <img
-                                src={imagePreview}
-                                alt="Profile preview"
-                                className="w-full h-64 object-cover rounded-lg"
-                            />
-                        </div>
-                    ) : (
-                        <div className="mb-6 w-full h-64 bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center">
-                            <Camera className="w-20 h-20 text-gray-400" />
-                        </div>
-                    )}
+            <label className="block w-full bg-blue-600 text-white text-center py-3 rounded-lg cursor-pointer">
+                <Upload className="inline w-5 h-5 mr-2" />
+                Upload Photo
+                <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+                />
+            </label>
 
-                    {/* Action Buttons */}
-                    <div className="space-y-3">
-                        {/* Upload / Change */}
-                        <label
-                            htmlFor="profile-upload"
-                            className="block w-full bg-blue-600 text-white text-center py-3 px-4 rounded-lg cursor-pointer hover:bg-blue-700 transition-colors font-medium"
-                        >
-                            <div className="flex items-center justify-center gap-2">
-                                <Upload className="w-5 h-5" />
-                                <span>{imagePreview ? "Change Photo" : "Upload Photo"}</span>
-                            </div>
-                            <input
-                                id="profile-upload"
-                                type="file"
-                                accept="image/*"
-                                onChange={handleImageChange}
-                                className="hidden"
-                            />
-                        </label>
+            {imagePreview && (
+                <button
+                onClick={handleRemoveImage}
+                className="w-full bg-red-500 text-white py-3 rounded-lg mt-3"
+                >
+                <X className="inline w-5 h-5 mr-2" />
+                Remove Photo
+                </button>
+            )}
 
-                        {/* Remove Photo */}
-                        {imagePreview && (
-
-                            <button
-                                onClick={handleRemoveImage}
-                                className="w-full bg-red-500 text-white py-3 px-4 rounded-lg hover:bg-red-600 transition-colors font-medium flex items-center justify-center gap-2"
-                            >
-                                <X className="w-5 h-5" />
-                                <span>Remove Photo</span>
-                            </button>
-                        )}
-
-                        {/* Cancel */}
-                        <DialogClose
-                            onClick={handleCloseDialog}
-                            className="w-full bg-gray-200 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-300 transition-colors font-medium text-center"
-                        >
-                            Close
-                        </DialogClose>
-                    </div>
-                </DialogContent>
-            </Dialog>
-
-        </div >
+            <DialogClose className="w-full mt-3 py-3 bg-gray-200 rounded-lg">
+                Close
+            </DialogClose>
+            </DialogContent>
+        </Dialog>
+        </div>
     );
 }
