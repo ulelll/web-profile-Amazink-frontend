@@ -1,6 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, FileText, Home, Settings, Users, Shield, Package, Clock, MapPin, Truck, LogOut } from "lucide-react";
 import { useState } from "react";
+import { logout } from '../../../lib/auth';
+import { useNavigate } from "react-router-dom";
 
 export default function SidebarHR() {
     const [openMenus, setOpenMenus] = useState({});
@@ -12,9 +14,18 @@ export default function SidebarHR() {
         }));
     };
 
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        logout();                 
+        navigate("/login", {       
+            replace: true
+        });
+    };
+
+    const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
     const menu = [
         { label: "Dashboard", icon: <Home size={18} />, path: "/hr" },
-        { label: "Users", icon: <Users size={18} />, path: "/hr/users" },
         {
             label: "Vacancies",
             icon: <FileText size={18} />,
@@ -118,6 +129,7 @@ export default function SidebarHR() {
             {/* Logout Button */}
             <div className="p-3 border-t border-gray-200">
                 <motion.button
+                    onClick={() => setShowLogoutConfirm(true)}
                     whileHover={{ x: 2 }}
                     whileTap={{ scale: 0.98 }}
                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-600 hover:bg-red-50 transition-all duration-200"
@@ -126,6 +138,49 @@ export default function SidebarHR() {
                     <span className="text-sm font-medium">Logout</span>
                 </motion.button>
             </div>
+
+            <AnimatePresence>
+                {showLogoutConfirm && (
+                    <motion.div
+                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        <motion.div
+                            className="bg-white rounded-xl shadow-xl w-[340px] p-6"
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            <h2 className="text-lg font-semibold text-gray-800">
+                                Konfirmasi Logout
+                            </h2>
+
+                            <p className="mt-2 text-sm text-gray-600">
+                                Anda yakin ingin Logout dari Amazink HR?
+                            </p>
+
+                            <div className="mt-6 flex justify-end gap-3">
+                                <button
+                                    onClick={() => setShowLogoutConfirm(false)}
+                                    className="px-4 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"
+                                >
+                                    Batalkan
+                                </button>
+
+                                <button
+                                    onClick={handleLogout}
+                                    className="px-4 py-2 text-sm rounded-lg bg-red-600 text-white hover:bg-red-700"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

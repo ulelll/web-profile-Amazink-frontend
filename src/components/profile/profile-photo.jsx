@@ -12,7 +12,7 @@ import {
     export default function ProfileImageUpload({
     disabled,
     imgUrl,
-    onChange, // ⬅️ TAMBAH INI
+    onChange, 
     }) {
     const [imagePreview, setImagePreview] = useState(imgUrl || null);
     const [showDialog, setShowDialog] = useState(false);
@@ -21,11 +21,8 @@ import {
         const file = e.target.files?.[0];
 
         if (!file || !file.type.startsWith("image/")) return;
-
-        // ⬅️ KIRIM FILE KE PARENT (INI KUNCI NYAWA)
         onChange(file);
 
-        // Preview
         const reader = new FileReader();
         reader.onloadend = () => {
         setImagePreview(reader.result);
@@ -35,7 +32,7 @@ import {
 
     const handleRemoveImage = () => {
         setImagePreview(null);
-        onChange(null); // reset parent juga
+        onChange(null); 
         setShowDialog(false);
     };
 

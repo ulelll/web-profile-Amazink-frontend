@@ -1,17 +1,17 @@
 import React from 'react';
-
+import AstonAPI from "../../../assets/AstonAPI.png";
 const StrukturPerusahaan = () => {
     const komisaris = {
         name: "Ahmad Agus Purnawan S.T",
         position: "Komisaris",
-        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop"
+        image: "/komisaris.jpg"
     };
 
     const companies = [
         {
         id: 1,
         name: "Aston Printer Indonesia",
-        logo: "https://images.unsplash.com/photo-1614624532983-4ce03382d63d?w=100&h=100&fit=crop",
+        logo: AstonAPI,
         b2b: true,
         b2c: true
         },
@@ -70,7 +70,6 @@ const StrukturPerusahaan = () => {
             ></div>
             ))}
             
-            {/* Additional waves from bottom right */}
             {[...Array(12)].map((_, i) => (
             <div
                 key={`r-${i}`}
@@ -98,13 +97,16 @@ const StrukturPerusahaan = () => {
             {/* Layout for All Screens - Centered Vertical */}
             <div className="flex flex-col items-center">
                 {/* Komisaris */}
-                <div className="bg-white rounded-3xl shadow-xl p-6 w-64 border border-gray-200 mb-4">
+                <div className="bg-white rounded-3xl shadow-xl p-6 w-80 border border-gray-200 mb-4">
                 <div className="flex flex-col items-center">
-                    <img 
-                    src={komisaris.image}
-                    alt={komisaris.name}
-                    className="w-20 h-20 rounded-full object-cover mb-3"
-                    />
+                    <div className="w-20 h-20 rounded-full overflow-hidden mb-3">
+                        <img 
+                            src={komisaris.image}
+                            alt={komisaris.name}
+                            className="w-full h-full object-cover scale-150 transition-transform duration-300 hover:scale-140"
+                        />
+                        
+                    </div>
                     <h3 className="text-blue-600 font-bold text-sm text-center mb-1">{komisaris.name}</h3>
                     <p className="text-gray-600 text-xs">{komisaris.position}</p>
                 </div>
@@ -113,18 +115,20 @@ const StrukturPerusahaan = () => {
                 <div className="w-0.5 h-12 bg-gray-300"></div>
 
                 {/* Amazink People Group */}
-                <div className="bg-white rounded-3xl shadow-xl p-5 w-64 border-2 border-blue-600 mb-4">
-                <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
-                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2L4 7v10l8 5 8-5V7l-8-5z"/>
-                    </svg>
+                <div className="bg-white rounded-3xl shadow-xl p-5 w-64 border-2 border-blue-700 mb-4">
+                    <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-white-600 rounded-xl flex items-center justify-center">
+                        <img
+                                    src="/amazink_logo_blue.svg"
+                                    alt="Amazink People"
+                                    className="w-8 h-8 object-contain"
+                                />
+                        </div>
+                        <div>
+                        <p className="text-blue-700 font-bold text-xs">Amazink people</p>
+                        <p className="text-blue-700 font-bold text-xs">group</p>
+                        </div>
                     </div>
-                    <div>
-                    <p className="text-blue-600 font-bold text-xs">Amazink people</p>
-                    <p className="text-blue-600 font-bold text-xs">group</p>
-                    </div>
-                </div>
                 </div>
 
                 {/* Companies */}
@@ -138,9 +142,14 @@ const StrukturPerusahaan = () => {
                     <div className="bg-white rounded-3xl shadow-lg p-5 border border-gray-200 hover:shadow-xl transition-shadow">
                         <div className="flex items-center gap-3">
                         <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
-                            <svg className="w-7 h-7 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                            </svg>
+                            <div className="w-12 h-12  flex items-center justify-center overflow-hidden">
+                                <img
+                                    src={company.logo}
+                                    alt={company.name}
+                                    className="w-16 h-16 object-contain"
+                                />
+                            </div>
+
                         </div>
                         <div className="flex-1">
                             <p className="text-gray-800 font-bold text-xs">{company.name}</p>

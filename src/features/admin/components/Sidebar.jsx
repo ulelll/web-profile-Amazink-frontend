@@ -1,6 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, FileText, Home, Settings, Users, Shield, Package, Clock, MapPin, Truck, LogOut } from "lucide-react";
-import { useState } from "react";
+import { useState } from "react";import { logout } from '../../../lib/auth';
+import { useNavigate } from "react-router-dom";
+
 
 export default function SidebarHR() {
     const [openMenus, setOpenMenus] = useState({});
@@ -10,6 +12,14 @@ export default function SidebarHR() {
             ...prev,
             [label]: !prev[label]
         }));
+    };
+
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        logout();                 
+        navigate("/login", {       
+            replace: true
+        });
     };
 
     const menu = [
@@ -109,6 +119,7 @@ export default function SidebarHR() {
             {/* Logout Button */}
             <div className="p-3 border-t border-gray-200">
                 <motion.button
+                    onClick={handleLogout}
                     whileHover={{ x: 2 }}
                     whileTap={{ scale: 0.98 }}
                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-600 hover:bg-red-50 transition-all duration-200"

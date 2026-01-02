@@ -1,32 +1,36 @@
 import { useEffect, useState } from 'react'
 
 const Header = () => {
-  // Untuk sementara hardcode dulu, nanti bisa diganti dari backend
   const slides = [
     {
       id: 1,
       image: '/bgheader.jpg',
-      title: 'Lorem Ipsum Dolor Sit Amet'
+      title: 'Lorem Ipsum Dolor Sit Amet',
+      subtitle: 'Lorem Ipsum Dolor Sit Amet'
     },
     {
       id: 2,
       image: '/bgheader2.jpg', 
-      title: 'Consectetur Adipiscing Elit'
+      title: 'Consectetur Adipiscing Elit',
+      subtitle: 'Lorem Ipsum Dolor Sit Amet'
     },
     {
       id: 3,
       image: '/bgheader3.jpg', 
-      title: 'Sed Do Eiusmod Tempor'
+      title: 'Sed Do Eiusmod Tempor',
+      subtitle: 'Lorem Ipsum Dolor Sit Amet'
     },
     {
       id: 4,
       image: '/bgheader4.jpg', 
-      title: 'Sed Do Eiusmod Tempor'
+      title: 'Sed Do Eiusmod Tempor',
+      subtitle: 'Lorem Ipsum Dolor Sit Amet'
     },
     {
       id: 5,
       image: '/bgheader5.jpg', 
-      title: 'Sed Do Eiusmod Tempor'
+      title: 'Sed Do Eiusmod Tempor', 
+      subtitle: 'Lorem Ipsum Dolor Sit Amet'
     }
   ]
 
@@ -62,7 +66,6 @@ const Header = () => {
 
   return (
     <div className='min-h-screen mb-4 relative flex items-center w-full overflow-hidden' id='Header'>
-      {/* Slider Images */}
       {slides.map((slide, index) => (
         <div
           key={slide.id}
@@ -80,9 +83,15 @@ const Header = () => {
 
       {/* Content */}
       <div className='z-10 container text-center mx-auto py-4 px-6 md:px-20 lg:px-32 text-white'>
-        <h2 className='text-5xl sm:text-6xl md:text-[82px] inline-block max-w-3xl font-semibold pt-20'>
-          {slides[currentSlide].title}
-        </h2>
+        <div className='flex flex-col items-center pt-20'>
+          <h2 className='text-5xl sm:text-6xl md:text-[82px] max-w-3xl font-semibold'>
+            {slides[currentSlide].title}
+          </h2>
+          
+          <h4 className='text-1xl sm:text-3xl md:text-4xl max-w-3xl font-reguler mt-6'>
+            {slides[currentSlide].subtitle}
+          </h4>
+        </div>
       </div>
 
       {/* Slider Indicators dengan Progress Bar */}
@@ -94,7 +103,6 @@ const Header = () => {
             className='group flex flex-col items-center gap-1'
             aria-label={`Go to slide ${index + 1}`}
           >
-            {/* Progress Bar Container */}
             <div className='w-16 sm:w-20 h-1 bg-white/30 rounded-full overflow-hidden'>
               <div
                 className='h-full bg-white rounded-full transition-all duration-100'
@@ -103,7 +111,6 @@ const Header = () => {
                 }}
               />
             </div>
-            {/* Dot Indicator (optional) */}
             <div
               className={`w-2 h-2 rounded-full transition-all ${
                 currentSlide === index ? 'bg-white' : 'bg-white/50'

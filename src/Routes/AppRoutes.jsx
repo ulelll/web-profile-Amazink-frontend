@@ -11,8 +11,9 @@ import VacancyDetail from "../features/talent/recruitment/detail_vacancy.jsx";
 import RecruitmentLanding from "@/layouts/RecruitmentLanding.jsx";
 
 /* ===== TALENT ===== */
-import Profile from "../features/talent/profile/profile.jsx";
-import Add from "../features/talent/profile/add.jsx";
+import Profile from "../features/talent/profile/view.jsx";
+import Create from "../features/talent/profile/create.jsx";
+import Edit from "../features/talent/profile/add.jsx";
 
 /* ===== HR ===== */
 import DashboardHr from "@/features/hr/pages/dashboard-hr.jsx"; 
@@ -56,8 +57,9 @@ export default function AppRoutes() {
 
         {/* ========== TALENT ========== */}
         <Route element={<ProtectedRoute allowedRoles={["talent"]} />}>
-            <Route path="/recruitment/profile" element={<Profile />} />
-            <Route path="/recruitment/profile/add" element={<Add />} />
+            <Route path="/recruitment/profile/view" element={<Profile />} />
+            <Route path="/recruitment/profile/create" element={<Create />} />
+            <Route path="/recruitment/profile/edit" element={<Edit />} />
         </Route>
 
         {/* ========== HR ========== */}

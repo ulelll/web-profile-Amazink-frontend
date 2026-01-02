@@ -9,24 +9,11 @@ import {
     TableRow,
 } from "@/components/ui"
 import HrLayout from "@/layouts/hr_layout"
-import {
-    Trash2,
-    Search,
-    Edit2,
-    ChevronLeft,
-    ChevronRight,
-    Plus,
-} from "lucide-react"
+import { Trash2, Search, Edit2, ChevronLeft, ChevronRight, Plus, } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select"
 
 const API_BASE_URL = "http://localhost:8000/api/v1"
 const LIMIT = 10
@@ -46,7 +33,7 @@ export default function VacancyManagementPage() {
     const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false)
 
-    // ===== FETCH DIVISION & COMPANY (FIXED) =====
+
     useEffect(() => {
         fetch(`${API_BASE_URL}/division/`)
             .then(res => res.json())
@@ -59,7 +46,6 @@ export default function VacancyManagementPage() {
             .catch(console.error)
     }, [])
 
-    // ===== FETCH VACANCIES =====
     useEffect(() => {
         fetchVacancies()
     }, [page, divisionFilter, companyFilter, statusFilter])
@@ -94,7 +80,6 @@ export default function VacancyManagementPage() {
         }
     }
 
-    // ===== DELETE =====
     const handleDelete = async (id) => {
         if (!confirm("Hapus lowongan ini?")) return
 
@@ -107,7 +92,6 @@ export default function VacancyManagementPage() {
         fetchVacancies()
     }
 
-    // ===== CLIENT SEARCH =====
     const filteredData = vacancies.filter(v =>
         v.title.toLowerCase().includes(search.toLowerCase()) ||
         v.company?.name?.toLowerCase().includes(search.toLowerCase())
@@ -143,7 +127,7 @@ export default function VacancyManagementPage() {
                             </div>
 
                             <Button
-                                onClick={() => navigate("/recruitment/vacancies/create")}
+                                onClick={() => navigate("/hr/vacancies/create-vacancy")}
                                 className="bg-white text-blue-600 hover:bg-blue-50 gap-2 shadow-md"
                             >
                                 <Plus className="w-4 h-4" />

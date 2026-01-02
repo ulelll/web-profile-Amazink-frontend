@@ -181,6 +181,15 @@ const handleLogin = async (e) => {
                                     {isLoading ? "Logging in..." : "Log in!"}
                                 </Button>
 
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => navigate("/")}
+                                    className="w-full h-12 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold"
+                                >
+                                    ← Kembali ke Home
+                                </Button>
+
                                 <p className="text-center text-sm text-gray-600">
                                     Belum punya akun?{" "}
                                     <button
@@ -245,6 +254,15 @@ const handleLogin = async (e) => {
                                     className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base rounded-md shadow-md transition-all duration-300"
                                 >
                                     {isLoading ? "Logging in..." : "Log in!"}
+                                </Button>
+
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => navigate("/")}
+                                    className="w-full h-12 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold"
+                                >
+                                    ← Kembali ke Home
                                 </Button>
                             </form>
                         </CardContent>
