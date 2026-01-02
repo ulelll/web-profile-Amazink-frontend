@@ -1,184 +1,365 @@
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import HrLayout from "@/layouts/hr_layout";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import HrLayout from "@/layouts/hr_layout.jsx";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { toast } from "@/hooks/use-toast";
+import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import { Briefcase, Building, Calendar as CalendarIcon, FileText, Users } from "lucide-react";
-import { useState } from "react";
+import { cn } from "@/lib/utils";
 
-export default function OpeningJob() {
-    const [jobTitle, setJobTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [lastFill, setLastFill] = useState("");
-    const [lastTurn, setLastTurn] = useState("");
-    const [lastDivision, setLastDivision] = useState("");
-    const [status, setStatus] = useState("");
+import { UploadCloud, Image as ImageIcon } from "lucide-react";
 
-    const [dateRange, setDateRange] = useState({
-        from: new Date(),
-        to: new Date(),
+
+
+
+
+const API_BASE_URL = "http://localhost:8000";
+
+const getAuthHeader = () => {
+    const token = localStorage.getItem("access_token");
+    return token
+    ? { Authorization: `Bearer ${token}` }
+    : {};
+};
+
+
+export default function CreateVacancy() {
+    const [divisions, setDivisions] = useState([]);
+    const [companies, setCompanies] = useState([]);
+
+const [form, setForm] = useState({
+        title: "",
+        description: "",
+        penempatan: "",
+        status_pekerjaan: "",
+        requirements: "",
+        image: null,
+        start_date: undefined,
+        end_date: undefined,
+        division_id: "",
+        company_id: "",
     });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+useEffect(() => {
+    const fetchData = async () => {
+        try {
+        const headers = getAuthHeader();
 
-        console.log({
-            jobTitle,
-            description,
-            startDate: dateRange.from,
-            endDate: dateRange.to,
-            lastFill,
-            lastTurn,
-            lastDivision,
-            status,
+        const [divRes, compRes] = await Promise.all([
+            fetch(`${API_BASE_URL}/api/v1/division/`, { headers }),
+            fetch(`${API_BASE_URL}/api/v1/company/`, { headers }),
+        ]);
+
+        if (!divRes.ok || !compRes.ok) {
+            throw new Error("Unauthorized or failed fetch");
+        }
+
+        setDivisions(await divRes.json());
+        setCompanies(await compRes.json());
+        } catch (err) {
+        console.error("Failed fetch division/company:", err);
+        }
+    };
+
+    fetchData();
+}, []);
+
+
+
+const handleChange = (key, value) => {
+        setForm((prev) => ({ ...prev, [key]: value }));
+};
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("title", form.title);
+    formData.append("description", form.description);
+    formData.append("penempatan", form.penempatan);
+    formData.append("status_pekerjaan", form.status_pekerjaan);
+    formData.append("requirements", form.requirements);
+    formData.append("division_id", form.division_id);
+    formData.append("company_id", form.company_id);
+    formData.append("is_open", true);
+
+    if (form.start_date) {
+        formData.append("start_date", format(form.start_date, "yyyy-MM-dd"));
+    }
+
+    if (form.end_date) {
+        formData.append("end_date", format(form.end_date, "yyyy-MM-dd"));
+    }
+
+    if (form.image) {
+        formData.append("image", form.image);
+    }
+
+    try {
+        const res = await fetch(
+            `${API_BASE_URL}/api/v1/vacancies/`,
+            {
+                method: "POST",
+                headers: {
+                ...getAuthHeader(), 
+                },
+                body: formData,
+            }
+);
+
+
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.detail || "Failed create vacancy");
+        }
+
+        await res.json();
+
+        toast({
+            title: "Lowongan berhasil dibuat 🎉",
+            description: "Vacancy langsung aktif & siap dilamar",
         });
 
-        alert("Form submitted! (check console)");
-    };
+    } catch (err) {
+        toast({
+            variant: "destructive",
+            title: "Gagal buat lowongan",
+            description: err.message,
+        });
+    }
+};
+
+
 
     return (
         <HrLayout>
-            <div className="min-h-screen bg-whitep-4 md:p-8 lg:p-12">
+        <div className="max-w-4xl mx-auto p-6">
+            <Card className="border-blue-200">
+            <CardHeader className="bg-blue-50 rounded-t-xl">
+                <CardTitle className="text-blue-700">Create Vacancy</CardTitle>
+            </CardHeader>
+            <CardContent className="mt-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-2">
+                    <Label>Judul Lowongan</Label>
+                    <Input
+                    value={form.title}
+                    onChange={(e) => handleChange("title", e.target.value)}
+                    placeholder="Contoh: Frontend Developer"
+                    />
+                </div>
 
-                <div className="bg-white rounded-2xl shadow-2xl border border-orange-100 overflow-hidden">
-                    <div className="h-2 bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500"></div>
+                <div className="space-y-2">
+                    <Label>Deskripsi</Label>
+                    <Textarea
+                    value={form.description}
+                    onChange={(e) => handleChange("description", e.target.value)}
+                    placeholder="Deskripsi Pekerjaan"
+                    />
+                </div>
 
-                    <div className="p-8 lg:p-10 space-y-8">
+                <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                    <Label>Penempatan</Label>
+                    <Select onValueChange={(v) => handleChange("penempatan", v)}>
+                        <SelectTrigger>
+                        <SelectValue placeholder="Pilih penempatan" />
+                        </SelectTrigger>
+                        <SelectContent>
+                        <SelectItem value="Onsite">Onsite</SelectItem>
+                        <SelectItem value="Remote">Remote</SelectItem>
+                        <SelectItem value="Hybrid">Hybrid</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    </div>
 
-                        <div className="space-y-3">
-                            <Label htmlFor="title" className="text-base font-semibold text-gray-700 flex items-center gap-2">
-                                <Briefcase className="w-4 h-4 text-orange-500" />
-                                Judul Lowongan
-                            </Label>
-                            <Input
-                                id="title"
-                                placeholder="Masukkan judul lowongan pekerjaan"
-                                value={jobTitle}
-                                onChange={(e) => setJobTitle(e.target.value)}
-                                className="h-12 border-2 border-gray-200 focus:border-orange-500 focus:ring-orange-500 rounded-xl text-base"
-                            />
-                        </div>
-
-                        <div className="space-y-3">
-                            <Label htmlFor="description" className="text-base font-semibold text-gray-700 flex items-center gap-2">
-                                <FileText className="w-4 h-4 text-orange-500" />
-                                Deskripsi
-                            </Label>
-                            <textarea
-                                id="description"
-                                className="w-full border-2 border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 rounded-xl p-4 h-36 text-base resize-none transition-all"
-                                placeholder="Masukkan deskripsi pekerjaan, tanggung jawab, dan persyaratan..."
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="space-y-3">
-                            <Label className="text-base font-semibold text-gray-700 flex items-center gap-2">
-                                <CalendarIcon className="w-4 h-4 text-orange-500" />
-                                Rentang Tanggal
-                            </Label>
-
-                            <Popover>
-                                <PopoverTrigger asChild>
-                                    <Button
-                                        variant="outline"
-                                        className="w-full justify-start h-12 border-2 border-gray-200 hover:border-orange-500 hover:bg-orange-50 rounded-xl text-base font-normal transition-all"
-                                    >
-                                        <CalendarIcon className="h-5 w-5 mr-3 text-orange-500" />
-
-                                        {dateRange.from && dateRange.to ? (
-                                            <span className="text-gray-700">
-                                                {format(dateRange.from, "LLL dd, y")} → {format(dateRange.to, "LLL dd, y")}
-                                            </span>
-                                        ) : (
-                                            <span className="text-gray-400">Pilih rentang tanggal</span>
-                                        )}
-                                    </Button>
-                                </PopoverTrigger>
-
-                                <PopoverContent className="p-0 w-auto">
-                                    <Calendar
-                                        mode="range"
-                                        numberOfMonths={2}
-                                        selected={dateRange}
-                                        onSelect={(v) => v && setDateRange(v)}
-                                        initialFocus
-                                        className="rounded-xl border-2 border-orange-100"
-                                    />
-                                </PopoverContent>
-                            </Popover>
-                        </div>
-
-                        <div className="bg-purple-50 p-6 lg:p-8 rounded-xl border-2 border-purple-100">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-5 flex items-center gap-2">
-                                <Users className="w-5 h-5 text-purple-500" />
-                                Detail Tambahan
-                            </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div className="space-y-2">
-                                    <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                        <Building className="w-4 h-4 text-purple-500" />
-                                        Divisi
-                                    </Label>
-                                    <Select onValueChange={setLastDivision}>
-                                        <SelectTrigger className="h-11 border-2 border-gray-200 focus:border-purple-500 rounded-lg bg-white">
-                                            <SelectValue placeholder="Pilih divisi" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="IT">IT Department</SelectItem>
-                                            <SelectItem value="HR">HR Department</SelectItem>
-                                            <SelectItem value="Finance">Finance</SelectItem>
-                                            <SelectItem value="Marketing">Marketing</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="space-y-3">
-                            <Label className="text-base font-semibold text-gray-700">Status Lowongan</Label>
-                            <Select onValueChange={setStatus}>
-                                <SelectTrigger className="h-12 border-2 border-gray-200 focus:border-orange-500 rounded-xl text-base">
-                                    <SelectValue placeholder="Pilih status lowongan" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="active">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                            Aktif
-                                        </div>
-                                    </SelectItem>
-                                    <SelectItem value="inactive">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-2 h-2 rounded-full bg-gray-400"></div>
-                                            Nonaktif
-                                        </div>
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        <div className="pt-6">
-                            <Button
-                                onClick={handleSubmit}
-                                type="button"
-                                className="w-full h-14 bg-orange-400 hover:bg-orange-500 text-white text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
-                            >
-                                <Briefcase className="w-5 h-5 mr-2" />
-                                Publikasikan Lowongan
-                            </Button>
-                        </div>
+                    <div className="space-y-2">
+                    <Label>Status Pekerjaan</Label>
+                    <Select onValueChange={(v) => handleChange("status_pekerjaan", v)}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Pilih status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="Fulltime">Fulltime</SelectItem>
+                            <SelectItem value="Internship">Internship</SelectItem>
+                            <SelectItem value="Parttime">Parttime</SelectItem>
+                        </SelectContent>
+                    </Select>
                     </div>
                 </div>
 
-                <div className="mt-6 text-center text-sm text-gray-500">
-                    <p>Semua field wajib diisi untuk mempublikasikan lowongan pekerjaan</p>
+                <div className="space-y-2">
+                    <Label>Persyaratan</Label>
+                    <Textarea
+                    value={form.requirements}
+                    onChange={(e) => handleChange("requirements", e.target.value)}
+                    placeholder="Persyaratan pekerjaan"
+                    />
                 </div>
+
+
+            <div className="space-y-2">
+                <Label>Gambar</Label>
+
+                <div
+                    onDragOver={(e) => e.preventDefault()}
+                        onDrop={(e) => {
+                            e.preventDefault();
+                            const file = e.dataTransfer.files?.[0];
+                            if (file && file.type.startsWith("image/")) {
+                                handleChange("image", file);
+                            }
+                        }}
+                        onPaste={(e) => {
+                            const item = e.clipboardData.items[0];
+                            if (item?.type.startsWith("image/")) {
+                                const file = item.getAsFile();
+                                handleChange("image", file);
+                        }
+                    }}
+                    className="relative flex flex-col items-center justify-center gap-2 border-2 border-dashed border-blue-300 rounded-xl p-6 cursor-pointer hover:bg-blue-50 transition"
+                >
+                    <input
+                        type="file"
+                        accept="image/*"
+                        className="absolute inset-0 opacity-0 cursor-pointer"
+                        onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleChange("image", file);
+                        }}
+                    />
+
+                    <UploadCloud className="h-8 w-8 text-blue-600" />
+                        <p className="text-sm text-blue-700 font-medium">
+                            Drag & drop, paste, or click to upload image
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                            PNG, JPG, JPEG
+                        </p>
+                </div>
+
+                {form.image && (
+                    <div className="mt-3">
+                    <img
+                        src={URL.createObjectURL(form.image)}
+                        alt="Preview"
+                        className="max-h-48 rounded-lg border"
+                    />
+                    </div>
+                )}
             </div>
+
+
+                <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                    <Label>Tanggal Mulai</Label>
+                    <Popover>
+                        <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !form.start_date && "text-muted-foreground"
+                            )}
+                        >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {form.start_date ? format(form.start_date, "PPP") : "Pilih Tanggal"}
+                        </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                            mode="single"
+                            selected={form.start_date}
+                            onSelect={(d) => handleChange("start_date", d)}
+                            initialFocus
+                        />
+                        </PopoverContent>
+                    </Popover>
+                    </div>
+
+                    <div className="space-y-2">
+                    <Label>Tanggal berakhir</Label>
+                    <Popover>
+                        <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !form.end_date && "text-muted-foreground"
+                            )}
+                        >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {form.end_date ? format(form.end_date, "PPP") : "Pilih Tanggal"}
+                        </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                            mode="single"
+                            selected={form.end_date}
+                            onSelect={(d) => handleChange("end_date", d)}
+                            initialFocus
+                        />
+                        </PopoverContent>
+                    </Popover>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                    <Label>Divisi</Label>
+                    <Select onValueChange={(v) => handleChange("division_id", v)}>
+                        <SelectTrigger>
+                        <SelectValue placeholder="Select division" />
+                        </SelectTrigger>
+                        <SelectContent>
+                        {divisions.map((d) => (
+                            <SelectItem key={d.id} value={String(d.id)}>
+                            {d.name}
+                            </SelectItem>
+                        ))}
+                        </SelectContent>
+                    </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                    <Label>Nama Perusahaan</Label>
+                    <Select onValueChange={(v) => handleChange("company_id", v)}>
+                        <SelectTrigger>
+                        <SelectValue placeholder="Select company" />
+                        </SelectTrigger>
+                        <SelectContent>
+                        {companies.map((c) => (
+                            <SelectItem key={c.id} value={String(c.id)}>
+                            {c.name}
+                            </SelectItem>
+                        ))}
+                        </SelectContent>
+                    </Select>
+                    </div>
+                </div>
+
+                <div className="flex justify-end">
+                    <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+                    Buat Lowongan!
+                    </Button>
+                </div>
+                </form>
+            </CardContent>
+            </Card>
+        </div>
         </HrLayout>
     );
 }

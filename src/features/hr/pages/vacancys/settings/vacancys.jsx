@@ -1,343 +1,300 @@
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui';
-import VacancyCard from '@/components/vacancy-card';
-import HrLayout from '@/layouts/hr_layout';
-import { Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import {
+    Button,
+    Input,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui"
+import HrLayout from "@/layouts/hr_layout"
+import { Trash2, Search, Edit2, ChevronLeft, ChevronRight, Plus, } from "lucide-react"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
-export default function VacancysSetting() {
-    const [vacancies, setVacancies] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [availableDivisions, setAvailableDivisions] = useState([]);
-    const [statusFilter, setStatusFilter] = useState("all");
-    const [divisionFilter, setDivisionFilter] = useState("all");
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select"
 
+const API_BASE_URL = "http://localhost:8000/api/v1"
+const LIMIT = 10
+
+export default function VacancyManagementPage() {
+    const navigate = useNavigate()
+
+    const [vacancies, setVacancies] = useState([])
+    const [divisions, setDivisions] = useState([])
+    const [companies, setCompanies] = useState([])
+
+    const [search, setSearch] = useState("")
+    const [divisionFilter, setDivisionFilter] = useState("")
+    const [companyFilter, setCompanyFilter] = useState("")
+    const [statusFilter, setStatusFilter] = useState("")
+
+    const [page, setPage] = useState(1)
+    const [loading, setLoading] = useState(false)
 
 
     useEffect(() => {
-        const dummyVacancies = [
-            {
-                id: 1,
-                judul_lowongan: "Senior Frontend Developer",
-                gambar: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop",
-                start_periode: "2025-01-01",
-                end_periode: "2025-02-28",
-                divisions: "IT",
-                lokasi: "Jakarta Selatan",
-                tipe_kerja: "Full-time",
-                gaji: "15.000.000 - 25.000.000",
-                deskripsi: "Mencari frontend developer berpengalaman untuk membangun UI modern dan scalable.",
-                kualifikasi: [
-                    "Minimal 3 tahun pengalaman sebagai Frontend Developer",
-                    "Menguasai React.js dan Tailwind",
-                    "Terbiasa dengan Git dan CI/CD",
-                    "Memahami REST API"
-                ],
-                tanggung_jawab: [
-                    "Membangun tampilan web yang responsif",
-                    "Bekerja sama dengan tim backend",
-                    "Melakukan code review",
-                    "Mengoptimalkan performa aplikasi"
-                ],
-                benefit: [
-                    "BPJS Kesehatan & Ketenagakerjaan",
-                    "Kerja hybrid",
-                    "Tunjangan makan & transport",
-                    "Budget Learning"
-                ],
-                golongan_peserta: [
-                    "Sarjana Informatika / Sistem Informasi",
-                    "Pengalaman minimal 3 tahun"
-                ],
-                kontak_hrd: "hrd@company.com",
-                posted_at: "2024-12-01",
-                active: 1
-            },
+        fetch(`${API_BASE_URL}/division/`)
+            .then(res => res.json())
+            .then(setDivisions)
+            .catch(console.error)
 
-            {
-                id: 2,
-                judul_lowongan: "Backend Engineer - Node.js",
-                gambar: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400&h=300&fit=crop",
-                start_periode: "2025-01-15",
-                end_periode: "2025-03-15",
-                divisions: "IT",
-                lokasi: "Bandung",
-                tipe_kerja: "Full-time",
-                gaji: "13.000.000 - 22.000.000",
-                deskripsi: "Membangun API yang kuat, aman, dan scalable.",
-                kualifikasi: [
-                    "Menguasai Node.js & Express",
-                    "Memahami database SQL dan NoSQL",
-                    "Mengerti prinsip clean architecture",
-                    "Terbiasa menggunakan Docker"
-                ],
-                tanggung_jawab: [
-                    "Membangun dan memelihara API",
-                    "Integrasi layanan internal",
-                    "Optimasi performa backend",
-                    "Setup pipeline CI/CD"
-                ],
-                benefit: [
-                    "Asuransi kesehatan swasta",
-                    "Work From Home 2x per minggu",
-                    "Tunjangan internet",
-                    "Training dan sertifikasi"
-                ],
-                golongan_peserta: [
-                    "Fresh Graduate dipersilakan melamar",
-                    "Sarjana Informatika / Teknik Komputer"
-                ],
-                kontak_hrd: "backend.hiring@company.com",
-                posted_at: "2024-12-05",
-                active: 1
-            },
+        fetch(`${API_BASE_URL}/company`)
+            .then(res => res.json())
+            .then(setCompanies)
+            .catch(console.error)
+    }, [])
 
-            {
-                id: 3,
-                judul_lowongan: "UI/UX Designer",
-                gambar: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=300&fit=crop",
-                start_periode: "2025-02-01",
-                end_periode: "2025-03-30",
-                divisions: "Desain grafis",
-                lokasi: "Yogyakarta",
-                tipe_kerja: "Internship",
-                gaji: "3.000.000 - 5.000.000",
-                deskripsi: "Merancang pengalaman pengguna yang modern dan mudah digunakan.",
-                kualifikasi: [
-                    "Menguasai Figma",
-                    "Paham design system",
-                    "Memiliki portofolio yang relevan",
-                    "Komunikatif dan detail-oriented"
-                ],
-                tanggung_jawab: [
-                    "Membuat wireframe, user flow, dan mockup",
-                    "Berkoordinasi dengan Frontend Developer",
-                    "Mengujicoba desain pada pengguna"
-                ],
-                benefit: [
-                    "Mentoring dengan senior designer",
-                    "Ruang kerja nyaman",
-                    "Snack dan kopi gratis"
-                ],
-                golongan_peserta: [
-                    "Mahasiswa aktif atau Fresh Graduate",
-                    "Bidang Desain/Multimedia"
-                ],
-                kontak_hrd: "uiux@company.com",
-                posted_at: "2024-12-10",
-                active: 1
-            },
+    useEffect(() => {
+        fetchVacancies()
+    }, [page, divisionFilter, companyFilter, statusFilter])
 
-            {
-                id: 4,
-                judul_lowongan: "Data Scientist",
-                gambar: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
-                start_periode: "2025-01-20",
-                end_periode: "2025-03-20",
-                divisions: "IT",
-                lokasi: "Jakarta Pusat",
-                tipe_kerja: "Full-time",
-                gaji: "18.000.000 - 30.000.000",
-                deskripsi: "Analisis data untuk pengambilan keputusan berbasis machine learning.",
-                kualifikasi: [
-                    "Menguasai Python (Pandas, NumPy, Scikit-Learn)",
-                    "Paham SQL",
-                    "Punya pengalaman membangun model ML"
-                ],
-                tanggung_jawab: [
-                    "Membangun model prediksi",
-                    "Membersihkan dan mengolah data",
-                    "Membuat visualisasi data"
-                ],
-                benefit: [
-                    "Asuransi lengkap",
-                    "Laptop Macbook",
-                    "Bonus tahunan"
-                ],
-                golongan_peserta: [
-                    "Sarjana Statistik/Matematika/TI",
-                    "Pengalaman minimal 1 tahun"
-                ],
-                kontak_hrd: "datascience@company.com",
-                posted_at: "2024-12-12",
-                active: 1
-            },
+    const fetchVacancies = async () => {
+        try {
+            setLoading(true)
+            const token = localStorage.getItem("access_token")
 
-            {
-                id: 5,
-                judul_lowongan: "DevOps Engineer",
-                gambar: "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=400&h=300&fit=crop",
-                divisions: "IT",
-                start_periode: "2025-02-10",
-                end_periode: "2025-04-10",
-                lokasi: "Surabaya",
-                tipe_kerja: "Full-time",
-                gaji: "16.000.000 - 28.000.000",
-                deskripsi: "Mengelola infrastruktur dan pipeline CI/CD.",
-                kualifikasi: [
-                    "Pengalaman CI/CD tools",
-                    "Menguasai Docker & Kubernetes",
-                    "Paham cloud (AWS/GC)"
-                ],
-                tanggung_jawab: [
-                    "Monitoring sistem",
-                    "Meningkatkan reliability",
-                    "Automasi proses deployment"
-                ],
-                benefit: [
-                    "Asuransi kesehatan",
-                    "WFH fleksibel",
-                    "Bonus kinerja"
-                ],
-                golongan_peserta: [
-                    "Sarjana Informatika",
-                    "Pengalaman minimal 2 tahun"
-                ],
-                kontak_hrd: "devops@company.com",
-                posted_at: "2024-12-15",
-                active: 1
-            },
+            const params = new URLSearchParams({
+                skip: (page - 1) * LIMIT,
+                limit: LIMIT,
+            })
 
-            {
-                id: 6,
-                judul_lowongan: "Mobile App Developer",
-                gambar: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop",
-                divisions: "IT",
-                start_periode: "2025-01-25",
-                end_periode: "2025-03-25",
-                lokasi: "Remote",
-                tipe_kerja: "Contract",
-                gaji: "10.000.000 - 18.000.000",
-                deskripsi: "Pengembangan aplikasi Android & iOS.",
-                kualifikasi: [
-                    "Menguasai Flutter atau React Native",
-                    "Paham integrasi API",
-                    "Punya pengalaman publikasi app"
-                ],
-                tanggung_jawab: [
-                    "Mengembangkan fitur baru",
-                    "Fix bugs",
-                    "Optimasi performa"
-                ],
-                benefit: [
-                    "Remote full",
-                    "Jam kerja fleksibel"
-                ],
-                golongan_peserta: [
-                    "Fresh Graduate welcome",
-                    "Pengalaman lebih disukai"
-                ],
-                kontak_hrd: "mobile@company.com",
-                posted_at: "2024-12-18",
-                active: 0
-            }
-        ];
+            if (divisionFilter) params.append("division_id", divisionFilter)
+            if (companyFilter) params.append("company_id", companyFilter)
+            if (statusFilter) params.append("is_open", statusFilter)
 
+            const res = await fetch(
+                `${API_BASE_URL}/vacancies/?${params.toString()}`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            )
 
-        setVacancies(dummyVacancies);
-        const divisions = Array.from(new Set(dummyVacancies.map(v => v.divisions.split(" ")[0])));
-        setAvailableDivisions(divisions);
-    }, []);
+            const data = await res.json()
+            setVacancies(Array.isArray(data) ? data : [])
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setLoading(false)
+        }
+    }
 
+    const handleDelete = async (id) => {
+        if (!confirm("Hapus lowongan ini?")) return
 
+        const token = localStorage.getItem("access_token")
+        await fetch(`${API_BASE_URL}/vacancies/${id}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
+        })
 
-    const filteredVacancies = vacancies.filter((vacancy) => {
-        const matchSearch =
-            vacancy.judul_lowongan.toLowerCase().includes(searchTerm.toLowerCase());
+        fetchVacancies()
+    }
 
-        const matchStatus =
-            statusFilter === "all" || String(vacancy.active) === statusFilter;
-
-        const divisionName = vacancy.divisions.split(" ")[0];
-        const matchDivision =
-            divisionFilter === "all" || divisionName === divisionFilter;
-
-        return matchSearch && matchStatus && matchDivision;
-    });
-
+    const filteredData = vacancies.filter(v =>
+        v.title.toLowerCase().includes(search.toLowerCase()) ||
+        v.company?.name?.toLowerCase().includes(search.toLowerCase())
+    )
 
     return (
         <HrLayout>
+            <div className="min-h-screen bg-gray-50 p-8">
 
-            <div className="min-h-screen bg-gray-50">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                {/* PAGE HEADER */}
+                <div className="mb-6">
+                    <h1 className="text-2xl font-bold text-gray-800">
+                        Vacancy Management
+                    </h1>
+                    <p className="text-sm text-gray-500">
+                        Kelola semua lowongan kerja
+                    </p>
+                </div>
 
-                    <div className="mb-8">
-                        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                            Atur Lowongan Kerja yang tersedia
-                        </h1>
+                {/* CARD */}
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
 
-                        {/* Search + Filters Container */}
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 gap-3">
-
-                            {/* Search */}
-                            <div className="relative w-full sm:max-w-sm">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                                <input
-                                    type="text"
-                                    placeholder="Cari lowongan..."
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
-                                />
+                    {/* CARD HEADER — SAME AS COMPANY */}
+                    <div className="bg-gradient-to-r from-blue-500 to-purple-700 px-6 py-4">
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <h2 className="text-lg font-semibold text-white">
+                                    Daftar Lowongan
+                                </h2>
+                                <p className="text-sm text-blue-100">
+                                    Kelola data lowongan pekerjaan
+                                </p>
                             </div>
 
-                            {/* Status Filter */}
-                            <DropdownMenu>
-                                <DropdownMenuTrigger className="px-4 py-3 bg-white border rounded-lg cursor-pointer w-full sm:w-auto text-left sm:text-center">
-                                    Status: {statusFilter === "all" ? "Semua" : statusFilter === "1" ? "Active" : "Not Active"}
-                                </DropdownMenuTrigger>
-
-                                <DropdownMenuContent>
-                                    <DropdownMenuItem onClick={() => setStatusFilter("all")}>
-                                        Semua
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => setStatusFilter("1")}>
-                                        Active
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => setStatusFilter("0")}>
-                                        Not Active
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-
-                            {/* Division Filter */}
-                            <DropdownMenu>
-                                <DropdownMenuTrigger className="px-4 py-3 bg-white border rounded-lg cursor-pointer w-full sm:w-auto text-left sm:text-center">
-                                    Divisi: {divisionFilter === "all" ? "Semua" : divisionFilter}
-                                </DropdownMenuTrigger>
-
-                                <DropdownMenuContent>
-                                    <DropdownMenuItem onClick={() => setDivisionFilter("all")}>
-                                        Semua
-                                    </DropdownMenuItem>
-
-                                    {availableDivisions.map((d) => (
-                                        <DropdownMenuItem key={d} onClick={() => setDivisionFilter(d)}>
-                                            {d}
-                                        </DropdownMenuItem>
-                                    ))}
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-
+                            <Button
+                                onClick={() => navigate("/hr/vacancies/create-vacancy")}
+                                className="bg-white text-blue-600 hover:bg-blue-50 gap-2 shadow-md"
+                            >
+                                <Plus className="w-4 h-4" />
+                                Tambah Lowongan
+                            </Button>
                         </div>
                     </div>
 
+                    {/* FILTERS */}
+                    <div className="px-6 py-4 border-b bg-gray-50 flex flex-wrap gap-3 items-center">
+                        {/* SEARCH */}
+                        <div className="relative max-w-sm w-full">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <Input
+                                placeholder="Cari judul / company..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                className="pl-10 bg-white"
+                            />
+                        </div>
 
+                        {/* DIVISION */}
+                        <Select value={divisionFilter} onValueChange={setDivisionFilter}>
+                            <SelectTrigger className="w-[200px] bg-white">
+                                <SelectValue placeholder="Semua Divisi" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {divisions.map(d => (
+                                    <SelectItem key={d.id} value={d.id.toString()}>
+                                        {d.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {filteredVacancies.map((vacancy) => (
-                            <VacancyCard key={vacancy.id} vacancy={vacancy} link={`/hr/vacancies/manage-vacancies/${vacancy.id}`} />
-                        ))}
+                        {/* COMPANY */}
+                        <Select value={companyFilter} onValueChange={setCompanyFilter}>
+                            <SelectTrigger className="w-[200px] bg-white">
+                                <SelectValue placeholder="Semua Perusahaan" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {companies.map(c => (
+                                    <SelectItem key={c.id} value={c.id.toString()}>
+                                        {c.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+
+                        {/* STATUS */}
+                        <Select value={statusFilter} onValueChange={setStatusFilter}>
+                            <SelectTrigger className="w-[160px] bg-white">
+                                <SelectValue placeholder="Semua Status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="true">Aktif</SelectItem>
+                                <SelectItem value="false">Tutup</SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
 
-                    {filteredVacancies.length === 0 && (
-                        <div className="text-center py-12">
-                            <p className="text-gray-500 text-lg">Tidak ada lowongan yang ditemukan</p>
-                        </div>
-                    )}
+                    {/* TABLE */}
+                    <div className="overflow-x-auto">
+                        <Table>
+                            <TableHeader>
+                                <TableRow className="bg-gray-100">
+                                    <TableHead>No</TableHead>
+                                    <TableHead>Judul</TableHead>
+                                    <TableHead>Company</TableHead>
+                                    <TableHead>Divisi</TableHead>
+                                    <TableHead>Status</TableHead>
+                                    <TableHead className="text-center">Aksi</TableHead>
+                                </TableRow>
+                            </TableHeader>
+
+                            <TableBody>
+                                {loading ? (
+                                    <TableRow>
+                                        <TableCell colSpan={6} className="text-center py-12">
+                                            Loading...
+                                        </TableCell>
+                                    </TableRow>
+                                ) : filteredData.length === 0 ? (
+                                    <TableRow>
+                                        <TableCell colSpan={6} className="text-center py-12 text-gray-500">
+                                            Tidak ada data
+                                        </TableCell>
+                                    </TableRow>
+                                ) : (
+                                    filteredData.map((v, i) => (
+                                        <TableRow key={v.id} className="hover:bg-indigo-50/40">
+                                            <TableCell>
+                                                {(page - 1) * LIMIT + i + 1}
+                                            </TableCell>
+                                            <TableCell className="font-medium">
+                                                {v.title}
+                                            </TableCell>
+                                            <TableCell>{v.company?.name}</TableCell>
+                                            <TableCell>{v.division?.name}</TableCell>
+                                            <TableCell>
+                                                <span
+                                                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                                        v.is_open
+                                                            ? "bg-green-100 text-green-700"
+                                                            : "bg-red-100 text-red-700"
+                                                    }`}
+                                                >
+                                                    {v.is_open ? "Aktif" : "Tutup"}
+                                                </span>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="flex justify-center gap-2">
+                                                    <Button
+                                                        size="sm"
+                                                        variant="ghost"
+                                                        onClick={() =>
+                                                            navigate(`/recruitment/vacancies/${v.id}`)
+                                                        }
+                                                    >
+                                                        <Edit2 className="w-4 h-4" />
+                                                    </Button>
+
+                                                    <Button
+                                                        size="sm"
+                                                        variant="ghost"
+                                                        className="text-red-600"
+                                                        onClick={() => handleDelete(v.id)}
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </Button>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                )}
+                            </TableBody>
+                        </Table>
+                    </div>
+
+                    {/* PAGINATION */}
+                    <div className="flex justify-between items-center p-4 border-t bg-gray-50">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            disabled={page === 1}
+                            onClick={() => setPage(p => p - 1)}
+                        >
+                            <ChevronLeft className="w-4 h-4" />
+                            Prev
+                        </Button>
+
+                        <span className="text-sm text-gray-600">
+                            Page {page}
+                        </span>
+
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            disabled={vacancies.length < LIMIT}
+                            onClick={() => setPage(p => p + 1)}
+                        >
+                            Next
+                            <ChevronRight className="w-4 h-4" />
+                        </Button>
+                    </div>
                 </div>
             </div>
         </HrLayout>
-    );
+    )
 }
-

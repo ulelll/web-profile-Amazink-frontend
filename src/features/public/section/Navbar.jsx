@@ -2,6 +2,7 @@ import logoAmazinkBlue from "@/assets/amazink_logo_blue.svg";
 import logoAmazinkWhite from "@/assets/amazink_logo_white.svg";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -64,15 +65,13 @@ const Navbar = () => {
             <a href="#structure" className={`transition ${scrolled ? "hover:text-blue-600" : "hover:text-gray-400"}`}>Struktur perusahaan</a>
             <a href="#subCompany" className={`transition ${scrolled ? "hover:text-blue-600" : "hover:text-gray-400"}`}>Gallery</a>
             <a href="#news" className={`transition ${scrolled ? "hover:text-blue-600" : "hover:text-gray-400"}`}>Berita</a>
+            <Link 
+              to="/recruitment" 
+              className={`transition ${scrolled ? "hover:text-blue-600" : "hover:text-gray-400"}`}
+            >
+              Karir
+            </Link>
           </ul>
-
-          {/* desktop button */}
-          <button className={`hidden md:block px-8 py-2 rounded-full transition-all duration-300 ${scrolled
-            ? "bg-blue-600 text-white hover:bg-blue-700"
-            : "bg-white text-black hover:bg-gray-100"
-            }`}>
-            Masuk
-          </button>
 
           {/* mobile menu icon */}
           <div
@@ -132,16 +131,6 @@ const Navbar = () => {
           ))}
         </nav>
 
-        {/* footer button */}
-        <div className="mt-10">
-          <button
-            onClick={() => setMenuOpen(false)}
-            className="w-full bg-blue-600 text-white py-3 rounded-full
-      hover:bg-blue-700 transition"
-          >
-            Masuk
-          </button>
-        </div>
       </div>
     </>
 
