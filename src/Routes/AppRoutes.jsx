@@ -12,11 +12,10 @@ import RecruitmentLanding from "@/layouts/RecruitmentLanding.jsx";
 
 /* ===== TALENT ===== */
 import Profile from "../features/talent/profile/view.jsx";
-import Create from "../features/talent/profile/create.jsx";
-import Edit from "../features/talent/profile/add.jsx";
+import AddProfile from "../features/talent/profile/add.jsx";
 
 /* ===== HR ===== */
-import DashboardHr from "@/features/hr/pages/dashboard-hr.jsx"; 
+import DashboardHr from "@/features/hr/pages/dashboard-hr.jsx";
 import CreateVacancy from "@/features/hr/pages/vacancys/create_vacancy.jsx";
 import ApplicantPage from "@/features/hr/pages/vacancys/pelamar/applicant";
 import ApplicantDetailPage from "@/features/hr/pages/vacancys/pelamar/detail";
@@ -33,16 +32,15 @@ import UserManagementPage from "@/features/admin/pages/user_management.jsx";
 import CustomVisiMisiPage from "@/features/admin/cms/custom_visimisi.jsx";
 
 export default function AppRoutes() {
-    return (
-        <Routes>
+  return (
+    <Routes>
+      {/* ========== PUBLIC ========== */}
+      <Route path="/" element={<PublicLayout />} />
+      <Route path="/news/:id" element={<PublicLayout />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/recruitment/register" element={<TalentRegisterPage />} />
 
-        {/* ========== PUBLIC ========== */}
-        <Route path="/" element={<PublicLayout />} />
-        <Route path="/news/:id" element={<PublicLayout />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/recruitment/register" element={<TalentRegisterPage />} />
-
-        <Route path="/recruitment" element={<RecruitmentLayout />}>
+      <Route path="/recruitment" element={<RecruitmentLayout />}>
         {/* landing */}
         <Route index element={<RecruitmentLanding />} />
 
@@ -52,38 +50,50 @@ export default function AppRoutes() {
 
         {/* profile (protected later) */}
         <Route path="profile" element={<Profile />} />
-        </Route>
+      </Route>
 
+      {/* ========== TALENT ========== */}
+      <Route element={<ProtectedRoute allowedRoles={["talent"]} />}>
+        <Route path="/recruitment/profile/view" element={<Profile />} />
+        <Route path="/recruitment/profile/add" element={<AddProfile />} />
+      </Route>
 
-        {/* ========== TALENT ========== */}
-        <Route element={<ProtectedRoute allowedRoles={["talent"]} />}>
-            <Route path="/recruitment/profile/view" element={<Profile />} />
-            <Route path="/recruitment/profile/create" element={<Create />} />
-            <Route path="/recruitment/profile/edit" element={<Edit />} />
-        </Route>
+      {/* ========== HR ========== */}
+      <Route element={<ProtectedRoute allowedRoles={["hr"]} />}>
+        <Route path="/hr" element={<DashboardHr />} />
+        <Route
+          path="/hr/vacancies/create-vacancy"
+          element={<CreateVacancy />}
+        />
+        <Route path="/hr/vacancies/applicants" element={<ApplicantPage />} />
+        <Route
+          path="/hr/vacancies/applicants/:id"
+          element={<ApplicantDetailPage />}
+        />
+        <Route
+          path="/hr/vacancies/manage-vacancies"
+          element={<VacancysSetting />}
+        />
+        <Route
+          path="/hr/vacancies/manage-vacancies/:id"
+          element={<VacancyDetailPage />}
+        />
+        <Route path="/hr/company-management" element={<CompanyManagement />} />
+        <Route
+          path="/hr/division-management"
+          element={<DivisionManagement />}
+        />
+        <Route path="/hr/profile" element={<Profile />} />
+      </Route>
 
-        {/* ========== HR ========== */}
-        <Route element={<ProtectedRoute allowedRoles={["hr"]} />}>
-            <Route path="/hr" element={<DashboardHr />} />
-            <Route path="/hr/vacancies/create-vacancy" element={<CreateVacancy />} />
-            <Route path="/hr/vacancies/applicants" element={<ApplicantPage />} />
-            <Route path="/hr/vacancies/applicants/:id" element={<ApplicantDetailPage />} />
-            <Route path="/hr/vacancies/manage-vacancies" element={<VacancysSetting />} />
-            <Route path="/hr/vacancies/manage-vacancies/:id" element={<VacancyDetailPage />} />
-            <Route path="/hr/company-management" element={<CompanyManagement />} />
-            <Route path="/hr/division-management" element={<DivisionManagement />} />
-            <Route path="/hr/profile" element={<Profile />} />
-        </Route>
-
-        {/* ========== ADMIN ========== */}
-        <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-            <Route path="/admin" element={<Dashboard />} />
-            <Route path="/admin/cms/header" element={<HeaderLandingPage />} />
-            <Route path="/admin/cms/news" element={<NewsUploadPage />} />
-            <Route path="/admin/cms/visi-misi" element={<CustomVisiMisiPage />} />
-            <Route path="/admin/users" element={<UserManagementPage />} />
-        </Route>
-
-        </Routes>
-    );
+      {/* ========== ADMIN ========== */}
+      <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+        <Route path="/admin" element={<Dashboard />} />
+        <Route path="/admin/cms/header" element={<HeaderLandingPage />} />
+        <Route path="/admin/cms/news" element={<NewsUploadPage />} />
+        <Route path="/admin/cms/visi-misi" element={<CustomVisiMisiPage />} />
+        <Route path="/admin/users" element={<UserManagementPage />} />
+      </Route>
+    </Routes>
+  );
 }
